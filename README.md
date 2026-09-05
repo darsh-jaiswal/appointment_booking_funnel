@@ -41,14 +41,25 @@ Full-stack: the frontend in this repo (landing page, content pages, quiz UI) plu
 
 ## Code in this repo
 
+Every file below is real code from the actual build, copied over as-is except for identity redaction (real name/contact info swapped for placeholders) and photo/logo assets removed. Nothing here is a mock-up or a rewrite.
+
 | File | What it shows |
 |---|---|
 | [`index.html`](./index.html), [`style.css`](./style.css) | Landing page structure and the design system |
 | [`script.js`](./script.js) | Client-side interaction logic, including quiz scoring |
 | [`article-*.html`](.), [`article.css`](./article.css) | Content page architecture |
+| [`funnel.html`](./funnel.html) | The qualification quiz itself: question flow, lead scoring, safety-flag logic |
+| [`register.html`](./register.html), [`book.html`](./book.html), [`confirmed.html`](./confirmed.html) | The booking flow end to end: capture, slot selection, confirmation |
+| [`video.html`](./video.html) | Pre-call video page shown to booked leads |
+| [`config.js`](./config.js) | Site-wide config constants (coach name, contact links; values shown are placeholders) |
+| [`admin-dashboard.html`](./admin-dashboard.html) | The admin view, now signed in via real Supabase Auth (`signInWithPassword`), not a shared secret |
 | [`supabase/functions/create-calendar-event/index.ts`](./supabase/functions/create-calendar-event/index.ts) | Real Google Calendar API integration. Secrets loaded via `Deno.env.get()`, never hardcoded |
 | [`supabase/functions/send-confirmation/index.ts`](./supabase/functions/send-confirmation/index.ts) | Real Gmail-send logic, same environment-variable pattern |
+| [`supabase/admin-auth-migration.sql`](./supabase/admin-auth-migration.sql) | The actual migration that replaced the client-exposed admin secret with Supabase Auth (see [What I changed my mind about](#what-i-changed-my-mind-about)) |
+| [`supabase/quiz-migration.sql`](./supabase/quiz-migration.sql) | Adds scoring columns to the leads table; the file's own comments show it superseding the old secret-based function |
+| [`secrets.example.js`](./secrets.example.js) | The template for local secrets setup (placeholder values only, safe to commit by design) |
 | [`CLAUDE.md`](./CLAUDE.md) | The project brief used to drive the Claude Code build |
+| [`source-project.gitignore`](./source-project.gitignore), [`source-project.vercelignore`](./source-project.vercelignore) | The real deploy config from the source project, renamed here to avoid clashing with this repo's own. Worth a look: the comments explain exactly what's excluded from the public deploy and why |
 
 ## Built with Claude Code
 
