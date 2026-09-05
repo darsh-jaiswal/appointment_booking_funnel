@@ -43,6 +43,8 @@ Full-stack: the frontend in this repo (landing page, content pages, quiz UI) plu
 
 Every file below is real code from the actual build, copied over as-is except for identity redaction (real name/contact info swapped for placeholders) and photo/logo assets removed. Nothing here is a mock-up or a rewrite.
 
+**Short on time? Open these four:** the demo recording above; [`supabase/functions/create-calendar-event/index.ts`](./supabase/functions/create-calendar-event/index.ts), the Google Calendar API integration and the single feature that took the most time to build; [`funnel.html`](./funnel.html) for the qualification quiz and scoring logic; and [`supabase/admin-auth-migration.sql`](./supabase/admin-auth-migration.sql) for the actual security fix described in [What I changed my mind about](#what-i-changed-my-mind-about).
+
 | File | What it shows |
 |---|---|
 | [`index.html`](./index.html), [`style.css`](./style.css) | Landing page structure and the design system |
