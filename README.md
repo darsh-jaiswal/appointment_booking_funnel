@@ -54,9 +54,9 @@ Full-stack: the frontend in this repo (landing page, content pages, quiz UI) plu
 
 This project was built with a `CLAUDE.md`-driven workflow, a written project brief that Claude Code reads at the start of every session so conventions and context persist without re-explaining them each time. That practice is consistent across my other projects; see [`personal-claude-skill`](https://github.com/darsh-jaiswal/personal-claude-skill) for a Claude Code Skill I authored along the same lines.
 
-## What I'd change
+## What I changed my mind about
 
-The admin-read path (viewing all leads) used to check a shared secret value client-side rather than using proper session-based auth. That's since been hardened on the live production site. The better long-term fix is Supabase Auth with a Row-Level Security policy keyed to the authenticated user, rather than a shared secret at all, which is exactly the kind of tradeoff you don't notice until you've shipped it and looked back.
+The admin-read path (viewing all leads) originally checked a shared secret value client-side rather than using proper session-based auth. It worked, but it's not how I'd build it today, and I've since replaced it with real Supabase Auth on the live production site. That's exactly the kind of tradeoff you don't notice until you've shipped it, looked back, and actually gone and fixed it.
 
 ## Note on client identity
 
