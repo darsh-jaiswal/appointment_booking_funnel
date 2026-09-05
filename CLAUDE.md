@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-Static single-page website for **Jordan Cole — Metabolic Health Coach**. No build system, no dependencies, no package manager — just three files served directly in a browser.
+Static single-page website for **Ayush — Diabetes Freedom Coach**. No build system, no dependencies, no package manager — just three files served directly in a browser.
 
 ## Running the Site
 

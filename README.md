@@ -1,10 +1,10 @@
 # Coach Booking & Lead-Qualification Funnel
 
-**Live site:** [diabetesresetprotocol.com](https://www.diabetesresetprotocol.com), the real, deployed production build this case study is drawn from.
+**Live site:** [diabetesresetprotocol.com](https://www.diabetesresetprotocol.com). I designed and built this site, and the booking and lead-qualification system behind it, for Ayush, a diabetes and metabolic health coach.
 
 I built a booking and lead-qualification system for coaches, consultants, and counselors. A prospect books a call slot directly. The event lands on the coach's Google Calendar automatically, the visitor gets an add-to-calendar option, and a confirmation email goes out with no manual back-and-forth. Right after booking, they answer a short set of qualification questions, which are scored automatically, so by the time the coach opens their dashboard, every booked call already has a score attached and they know who's worth their full attention before they ever pick up the phone.
 
-This is a case study of a real, currently-deployed build for a health-coaching client, generalized here because the underlying pattern (book, qualify, score, auto-confirm) applies to any one-on-one service business. Client identity, contact details, and branding assets have been replaced with placeholders throughout this repo; see [Note on client identity](#note-on-client-identity) below.
+This case study is drawn from that real, currently-deployed build. The underlying pattern (book, qualify, score, auto-confirm) applies to any one-on-one service business, not just health coaching, which is why it's presented here as a general system. Some details are still intentionally left out; see [Note on client identity](#note-on-client-identity) below.
 
 ## Demo
 
@@ -44,4 +44,4 @@ The admin-read path (viewing all leads) used to check a shared secret value clie
 
 ## Note on client identity
 
-The original build is for a real, operating health-coaching business. The actual repository behind the live site has not been made public and stays private; it contains the client's admin/lead-capture pages, database schema, and identifying details that don't belong in a public portfolio piece. This repo is a separate, purpose-built case study: real code, hand-picked and copied over from that build, with every reference to the client's real name, contact details, and branding assets (logo, photography, business links) replaced with generic placeholders (`Jordan Cole`, placeholder email/phone/links, placeholder graphics). What's shown here is the reusable pattern and the genuine engineering behind it, not the client's business, and not the original repository itself.
+This is real work for a real, operating health-coaching business, and the site above is genuinely mine to show. The actual repository behind the live site has not been made public and stays private; it contains the client's admin/lead-capture pages and database schema, which don't belong in a public portfolio piece regardless of whose name is on the project. This repo is a separate, purpose-built case study: real code, hand-picked and copied over from that build. What's shown here is the reusable pattern and the genuine engineering behind it; not the original repository itself.

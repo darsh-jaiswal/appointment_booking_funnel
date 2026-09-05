@@ -38,7 +38,7 @@ serve(async (req) => {
 <div style="max-width:560px;margin:40px auto;background:#ffffff;border:1px solid #D7CDCC;border-radius:16px;overflow:hidden;">
 
   <div style="background:#3D6B4A;padding:36px 40px;text-align:center;">
-    <p style="color:#C8D5C0;font-size:12px;letter-spacing:.12em;text-transform:uppercase;margin:0 0 8px;">Jordan Cole &middot; Metabolic Health Coach</p>
+    <p style="color:#C8D5C0;font-size:12px;letter-spacing:.12em;text-transform:uppercase;margin:0 0 8px;">Ayush &middot; Diabetes Freedom Coach</p>
     <h1 style="color:#ffffff;font-size:26px;margin:0;font-weight:600;">You're confirmed &#10003;</h1>
   </div>
 
@@ -74,13 +74,13 @@ serve(async (req) => {
     <div style="text-align:center;margin:0 0 36px;">
       <a href="https://wa.me/15550100100"
          style="display:inline-block;background:#3D6B4A;color:#ffffff;padding:14px 36px;border-radius:50px;text-decoration:none;font-size:15px;font-weight:600;">
-        Message Jordan
+        Message Ayush
       </a>
     </div>
 
     <hr style="border:none;border-top:1px solid #D7CDCC;margin:0 0 24px;">
     <p style="color:#3A443F;font-size:12px;opacity:.55;margin:0;text-align:center;line-height:1.8;">
-      Jordan Cole &middot; Metabolic Health Coach<br>
+      Ayush &middot; Diabetes Freedom Coach<br>
     </p>
   </div>
 
@@ -97,7 +97,7 @@ serve(async (req) => {
     })
 
     await transporter.sendMail({
-      from: `"Jordan Cole" <${GMAIL_USER}>`,
+      from: `"Ayush" <${GMAIL_USER}>`,
       to:      email,
       subject: `Your discovery call is confirmed — ${displayDate}`,
       html,
