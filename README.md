@@ -1,4 +1,4 @@
-# Coach Booking & Lead-Qualification Funnel
+# Qualified Booking Funnel
 
 **Live site:** [diabetesresetprotocol.com](https://www.diabetesresetprotocol.com). I designed and built this site, and the booking and lead-qualification system behind it, for Ayush, a diabetes and metabolic health coach.
 
