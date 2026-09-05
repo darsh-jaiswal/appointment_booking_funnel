@@ -1,10 +1,26 @@
-# Qualified Booking Funnel
+# Appointment Booking Funnel
 
 **Live site:** [diabetesresetprotocol.com](https://www.diabetesresetprotocol.com). I designed and built this site, and the booking and lead-qualification system behind it, for Ayush, a diabetes and metabolic health coach.
 
 I built a booking and lead-qualification system for coaches, consultants, and counselors. A prospect books a call slot directly. The event lands on the coach's Google Calendar automatically, the visitor gets an add-to-calendar option, and a confirmation email goes out with no manual back-and-forth. Right after booking, they answer a short set of qualification questions, which are scored automatically, so by the time the coach opens their dashboard, every booked call already has a score attached and they know who's worth their full attention before they ever pick up the phone.
 
 This case study is drawn from that real, currently-deployed build. The underlying pattern (book, qualify, score, auto-confirm) applies to any one-on-one service business, not just health coaching, which is why it's presented here as a general system. Some details are still intentionally left out; see [Note on client identity](#note-on-client-identity) below.
+
+## Who can use this
+
+Any profession where a first conversation is valuable, limited, and not every inquiry deserves the same amount of time.
+
+- **Doctors** can use it to screen patients by symptom and urgency before a consultation slot is confirmed.
+- **Health and fitness coaches** can use it to qualify serious clients before a discovery call. This is the actual use case it was built for.
+- **Therapists and counselors** can use it to screen for fit and urgency before a first session.
+- **Lawyers** can use it to filter case inquiries by case type and urgency before a paid consultation.
+- **Financial advisors** can use it to qualify prospects by portfolio size or need before a planning call.
+- **Real estate agents** can use it to pre-qualify buyers and sellers by budget and timeline before a viewing.
+- **Career and academic consultants** can use it to screen students by goals and stage before an advising session.
+- **Freelance consultants** (marketing, design, development) can use it to filter project inquiries by budget and scope before a sales call.
+- **Recruiters** can use it to qualify candidates by role fit before a screening call.
+- **Veterinarians** can use it to triage urgency before booking an appointment slot.
+- **Immigration and tax consultants** can use it to sort inquiries by case complexity before a paid consultation.
 
 ## Demo
 
