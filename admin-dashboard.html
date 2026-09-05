@@ -1,0 +1,1066 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin — Ayush</title>
+  <meta name="robots" content="noindex, nofollow" />
+  <link rel="icon" type="image/png" href="assets/placeholder-logo.svg" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --bg:          #FBF9F6;
+      --bg-dark:     #EFECE7;
+      --text-h:      #1E2D24;
+      --text-b:      #3A443F;
+      --green:       #3D6B4A;
+      --green-pale:  #EBF2E8;
+      --green-muted: #C8D5C0;
+      --border:      #D7CDCC;
+      --white:       #FFFFFF;
+      --red:         #B03A2E;
+      --red-pale:    #FDEDEC;
+      --serif:       'Playfair Display', Georgia, serif;
+      --sans:        'DM Sans', system-ui, sans-serif;
+      --shadow:      0 4px 20px rgba(30,45,36,.08);
+      --nav-h:       60px;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: var(--sans);
+      background: var(--bg);
+      color: var(--text-b);
+      min-height: 100vh;
+    }
+
+    /* ── Password Gate ─────────────────────────────────── */
+    #gateOverlay {
+      position: fixed; inset: 0;
+      background: var(--bg);
+      display: flex; align-items: center; justify-content: center;
+      z-index: 9999;
+    }
+    .gate-card {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      box-shadow: var(--shadow);
+      padding: 48px 40px;
+      width: 100%; max-width: 380px;
+      text-align: center;
+    }
+    .gate-logo { height: 44px; margin-bottom: 24px; }
+    .gate-card h2 {
+      font-family: var(--serif);
+      font-size: 1.5rem;
+      color: var(--text-h);
+      margin-bottom: 6px;
+    }
+    .gate-card p {
+      font-size: .84rem;
+      color: var(--text-b);
+      opacity: .65;
+      margin-bottom: 28px;
+      line-height: 1.5;
+    }
+    .gate-input {
+      width: 100%;
+      padding: 12px 16px;
+      border: 1.5px solid var(--border);
+      border-radius: 10px;
+      font-family: var(--sans);
+      font-size: .95rem;
+      margin-bottom: 14px;
+      outline: none;
+      transition: border-color .2s;
+    }
+    .gate-input:focus { border-color: var(--green); }
+    .gate-btn {
+      width: 100%;
+      padding: 13px;
+      background: var(--green);
+      color: #fff;
+      border: none;
+      border-radius: 50px;
+      font-family: var(--sans);
+      font-size: .95rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background .2s;
+    }
+    .gate-btn:hover { background: var(--text-h); }
+    .gate-error {
+      color: var(--red);
+      font-size: .82rem;
+      margin-top: 12px;
+      display: none;
+    }
+
+    /* ── Nav ───────────────────────────────────────────── */
+    nav {
+      position: sticky; top: 0;
+      height: var(--nav-h);
+      background: var(--white);
+      border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; gap: 12px;
+      padding: 0 28px;
+      z-index: 100;
+    }
+    .nav-logo { height: 34px; }
+    .nav-title {
+      font-family: var(--serif);
+      font-size: .98rem;
+      font-weight: 600;
+      color: var(--text-h);
+    }
+    .nav-badge {
+      background: var(--green-pale);
+      color: var(--green);
+      font-size: .68rem;
+      font-weight: 500;
+      padding: 3px 9px;
+      border-radius: 20px;
+      letter-spacing: .06em;
+      text-transform: uppercase;
+    }
+    .nav-spacer { flex: 1; }
+    #reloadBtn {
+      padding: 7px 16px;
+      border: 1.5px solid var(--border);
+      border-radius: 50px;
+      font-family: var(--sans);
+      font-size: .8rem;
+      background: transparent;
+      color: var(--text-b);
+      cursor: pointer;
+      transition: all .2s;
+      margin-right: 8px;
+    }
+    #reloadBtn:hover { border-color: var(--green); color: var(--green); }
+    .logout-btn {
+      padding: 7px 16px;
+      border: 1.5px solid var(--border);
+      border-radius: 50px;
+      font-family: var(--sans);
+      font-size: .8rem;
+      background: transparent;
+      color: var(--text-b);
+      cursor: pointer;
+      transition: all .2s;
+    }
+    .logout-btn:hover { border-color: var(--red); color: var(--red); }
+
+    /* ── Main ──────────────────────────────────────────── */
+    main { padding: 28px 28px 60px; max-width: 1180px; margin: 0 auto; }
+
+    /* ── Stats ─────────────────────────────────────────── */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+      margin-bottom: 28px;
+    }
+    .stat-card {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 18px 22px;
+    }
+    .stat-label {
+      font-size: .68rem;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: .1em;
+      color: var(--green);
+      margin-bottom: 6px;
+    }
+    .stat-value {
+      font-family: var(--serif);
+      font-size: 2rem;
+      color: var(--text-h);
+      font-weight: 600;
+      line-height: 1;
+    }
+    .stat-sub {
+      font-size: .73rem;
+      color: var(--text-b);
+      opacity: .55;
+      margin-top: 5px;
+    }
+
+    /* ── Tabs ──────────────────────────────────────────── */
+    .tabs {
+      display: flex;
+      gap: 3px;
+      background: var(--bg-dark);
+      border-radius: 10px;
+      padding: 4px;
+      width: fit-content;
+      margin-bottom: 20px;
+    }
+    .tab {
+      padding: 7px 20px;
+      border-radius: 7px;
+      font-size: .86rem;
+      font-weight: 500;
+      cursor: pointer;
+      border: none;
+      background: transparent;
+      color: var(--text-b);
+      transition: all .18s;
+    }
+    .tab.active {
+      background: var(--white);
+      color: var(--text-h);
+      box-shadow: 0 1px 4px rgba(30,45,36,.1);
+    }
+
+    /* ── Sections ──────────────────────────────────────── */
+    .section { display: none; }
+    .section.active { display: block; }
+
+    /* ── Table Toolbar ─────────────────────────────────── */
+    .table-toolbar {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+    .search-input {
+      padding: 9px 14px;
+      border: 1.5px solid var(--border);
+      border-radius: 9px;
+      font-family: var(--sans);
+      font-size: .86rem;
+      outline: none;
+      flex: 1;
+      max-width: 280px;
+      transition: border-color .2s;
+    }
+    .search-input:focus { border-color: var(--green); }
+    .csv-btn {
+      padding: 8px 16px;
+      border: 1.5px solid var(--border);
+      border-radius: 9px;
+      font-family: var(--sans);
+      font-size: .81rem;
+      font-weight: 500;
+      background: var(--white);
+      color: var(--text-h);
+      cursor: pointer;
+      transition: all .2s;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .csv-btn:hover { border-color: var(--green); color: var(--green); }
+
+    /* ── Table ─────────────────────────────────────────── */
+    .table-wrap {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+    }
+    table { width: 100%; border-collapse: collapse; }
+    th {
+      background: var(--bg);
+      padding: 11px 16px;
+      text-align: left;
+      font-size: .68rem;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: .09em;
+      color: var(--green);
+      border-bottom: 1px solid var(--border);
+      cursor: pointer;
+      user-select: none;
+      white-space: nowrap;
+    }
+    th:hover { color: var(--text-h); }
+    th.sorted-asc::after  { content: ' ↑'; }
+    th.sorted-desc::after { content: ' ↓'; }
+    td {
+      padding: 11px 16px;
+      font-size: .84rem;
+      border-bottom: 1px solid var(--border);
+      vertical-align: middle;
+    }
+    tr:last-child td { border-bottom: none; }
+    tr:hover td { background: #f6f9f5; }
+
+    .pill {
+      display: inline-block;
+      padding: 3px 10px;
+      border-radius: 20px;
+      font-size: .7rem;
+      font-weight: 500;
+    }
+    .pill-green  { background: var(--green-pale); color: var(--green); }
+    .pill-red    { background: var(--red-pale);   color: var(--red);   }
+    .pill-grey   { background: var(--bg-dark);    color: var(--text-b); }
+    .pill-amber  { background: #FEF9EE;           color: #A0692A; }
+    .pill-flag   { background: #FEF3CD;           color: #7D5A00; font-size: .65rem; padding: 2px 7px; }
+
+    .action-btn {
+      padding: 4px 12px;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      font-size: .76rem;
+      cursor: pointer;
+      background: transparent;
+      color: var(--text-b);
+      font-family: var(--sans);
+      transition: all .2s;
+    }
+    .action-btn:hover { border-color: var(--red); color: var(--red); }
+    .action-btn:disabled { opacity: .35; cursor: default; }
+
+    /* Answers expander row */
+    .answers-row td {
+      padding: 0 !important;
+      border-bottom: 1px solid var(--border);
+    }
+    .answers-inner {
+      padding: 14px 18px 18px;
+      background: #F6F9F5;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 8px 20px;
+    }
+    .ans-item { font-size: .78rem; color: var(--text-b); line-height: 1.4; }
+    .ans-item .ans-q { opacity: .55; font-size: .71rem; text-transform: uppercase; letter-spacing: .06em; }
+    .ans-item .ans-v { color: var(--text-h); font-weight: 500; }
+
+    /* Tier filter toolbar */
+    .tier-filter {
+      display: flex; gap: 4px;
+    }
+    .tier-btn {
+      padding: 5px 12px;
+      border: 1.5px solid var(--border);
+      border-radius: 7px;
+      font-family: var(--sans);
+      font-size: .78rem;
+      background: var(--white);
+      cursor: pointer;
+      transition: all .15s;
+      color: var(--text-b);
+    }
+    .tier-btn.active { border-color: var(--green); color: var(--green); font-weight: 500; background: var(--green-pale); }
+    .tier-btn:hover:not(.active) { border-color: var(--green); color: var(--green); }
+
+    .empty-row td {
+      text-align: center;
+      padding: 52px;
+      color: var(--text-b);
+      opacity: .45;
+      font-style: italic;
+    }
+
+    .loading-row td {
+      text-align: center;
+      padding: 52px;
+      color: var(--text-b);
+      opacity: .45;
+      font-size: .86rem;
+    }
+
+    /* ── Config warning ────────────────────────────────── */
+    .warn-banner {
+      background: #FEF3CD;
+      border: 1px solid #F8D976;
+      border-radius: 10px;
+      padding: 14px 20px;
+      font-size: .85rem;
+      color: #7D5A00;
+      margin-bottom: 20px;
+      display: none;
+    }
+
+    /* ── Availability ──────────────────────────────────── */
+    .avail-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-bottom: 20px;
+    }
+    .avail-card {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 24px;
+    }
+    .avail-card-title {
+      font-size: .7rem;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: .1em;
+      color: var(--green);
+      margin-bottom: 16px;
+    }
+    .toggle-grid { display: flex; flex-wrap: wrap; gap: 8px; }
+    .tog {
+      padding: 7px 14px;
+      border: 1.5px solid var(--border);
+      border-radius: 8px;
+      font-family: var(--sans);
+      font-size: .84rem;
+      cursor: pointer;
+      background: transparent;
+      color: var(--text-b);
+      transition: all .18s;
+    }
+    .tog.on { background: var(--green); border-color: var(--green); color: #fff; font-weight: 500; }
+    .tog:hover:not(.on) { border-color: var(--green); color: var(--green); }
+    .save-avail {
+      padding: 11px 28px;
+      background: var(--green);
+      color: #fff;
+      border: none;
+      border-radius: 50px;
+      font-family: var(--sans);
+      font-size: .9rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background .2s;
+    }
+    .save-avail:hover { background: var(--text-h); }
+    .save-avail:disabled { opacity: .6; cursor: default; }
+    .avail-status { font-size: .84rem; margin-left: 14px; display: none; }
+    .avail-status.ok  { color: var(--green); }
+    .avail-status.err { color: var(--red); }
+
+    @media (max-width: 900px) {
+      .avail-grid { grid-template-columns: 1fr; }
+      .stats-grid { grid-template-columns: repeat(2, 1fr); }
+      main { padding: 20px 16px 40px; }
+      nav  { padding: 0 16px; }
+    }
+    @media (max-width: 600px) {
+      .stats-grid { grid-template-columns: 1fr 1fr; }
+      th, td { padding: 9px 10px; font-size: .78rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ══════════════════════════════════════════════
+  PASSWORD GATE
+══════════════════════════════════════════════ -->
+<div id="gateOverlay">
+  <div class="gate-card">
+    <img src="assets/placeholder-logo.svg" alt="" class="gate-logo" />
+    <h2>Admin Access</h2>
+    <p>This page is private. Sign in with your admin account to view your leads and bookings.</p>
+    <input type="email" id="gateEmail" class="gate-input" placeholder="Email" autocomplete="username" />
+    <input type="password" id="gateInput" class="gate-input" placeholder="Password" autocomplete="current-password" />
+    <button class="gate-btn" id="gateBtn">Sign In</button>
+    <div class="gate-error" id="gateError">Sign-in failed — check your email and password.</div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════
+  NAVIGATION
+══════════════════════════════════════════════ -->
+<nav>
+  <img src="assets/placeholder-logo.svg" alt="" class="nav-logo" />
+  <span class="nav-title">Admin Dashboard</span>
+  <span class="nav-badge">Private</span>
+  <div class="nav-spacer"></div>
+  <button id="reloadBtn" onclick="reloadData()">↻ Refresh</button>
+  <button class="logout-btn" onclick="logout()">Log out</button>
+</nav>
+
+<!-- ══════════════════════════════════════════════
+  MAIN CONTENT
+══════════════════════════════════════════════ -->
+<main>
+
+  <div class="warn-banner" id="warnBanner">
+    ⚠️ <strong>Service key not set.</strong> Open <code>admin.html</code> and paste your Supabase service role key into <code>SUPABASE_SERVICE_KEY</code>. Get it from: Supabase → Settings → API → service_role.
+  </div>
+
+  <!-- Stats -->
+  <div class="stats-grid">
+    <div class="stat-card">
+      <div class="stat-label">Total Leads</div>
+      <div class="stat-value" id="statLeads">—</div>
+      <div class="stat-sub">all time</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">🔥 Hot Leads (A)</div>
+      <div class="stat-value" id="statHot">—</div>
+      <div class="stat-sub">prioritise these calls</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Total Bookings</div>
+      <div class="stat-value" id="statBookings">—</div>
+      <div class="stat-sub">confirmed calls</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Upcoming Calls</div>
+      <div class="stat-value" id="statUpcoming">—</div>
+      <div class="stat-sub">next 7 days</div>
+    </div>
+  </div>
+
+  <!-- Tab switcher -->
+  <div class="tabs">
+    <button class="tab active" id="tab-leads"         onclick="switchTab('leads',        this)">Leads</button>
+    <button class="tab"        id="tab-appointments"  onclick="switchTab('appointments', this)">Appointments</button>
+    <button class="tab"        id="tab-availability"  onclick="switchTab('availability', this)">Availability</button>
+  </div>
+
+  <!-- Leads section -->
+  <div class="section active" id="sec-leads">
+    <div class="table-toolbar">
+      <input type="text" class="search-input" placeholder="Search name, email, phone…" oninput="filterLeads(this.value)" />
+      <div class="tier-filter">
+        <button class="tier-btn active" onclick="setTierFilter('all',  this)">All</button>
+        <button class="tier-btn"        onclick="setTierFilter('A',    this)">🔥 A</button>
+        <button class="tier-btn"        onclick="setTierFilter('B',    this)">B</button>
+        <button class="tier-btn"        onclick="setTierFilter('C',    this)">C</button>
+      </div>
+      <button class="csv-btn" onclick="exportCSV('leads')">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        Export CSV
+      </button>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th onclick="sortLeads('created_at')">Date joined</th>
+            <th onclick="sortLeads('first_name')">Name</th>
+            <th onclick="sortLeads('email')">Email</th>
+            <th onclick="sortLeads('phone')">Phone</th>
+            <th onclick="sortLeads('lead_tier')">Tier</th>
+            <th onclick="sortLeads('lead_score')">Score</th>
+            <th>Answers</th>
+          </tr>
+        </thead>
+        <tbody id="leadsBody">
+          <tr class="loading-row"><td colspan="7" style="text-align:center;padding:40px;opacity:.45;">Loading…</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Appointments section -->
+  <div class="section" id="sec-appointments">
+    <div class="table-toolbar">
+      <input type="text" class="search-input" placeholder="Search name, email, phone…" oninput="filterAppts(this.value)" />
+      <button class="csv-btn" onclick="exportCSV('appointments')">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        Export CSV
+      </button>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th onclick="sortAppts('scheduled_at')">Date &amp; Time (IST)</th>
+            <th onclick="sortAppts('first_name')">Name</th>
+            <th onclick="sortAppts('email')">Email</th>
+            <th onclick="sortAppts('phone')">Phone</th>
+            <th onclick="sortAppts('status')">Status</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody id="apptBody">
+          <tr class="loading-row"><td colspan="6">Loading…</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Availability section -->
+  <div class="section" id="sec-availability">
+    <div class="avail-grid">
+      <div class="avail-card">
+        <div class="avail-card-title">Available Days</div>
+        <div class="toggle-grid" id="dayToggles"></div>
+      </div>
+      <div class="avail-card">
+        <div class="avail-card-title">Available Hours (IST)</div>
+        <div class="toggle-grid" id="hourToggles"></div>
+      </div>
+    </div>
+    <button class="save-avail" id="saveAvailBtn" onclick="saveAvailability()">Save Changes</button>
+    <span class="avail-status" id="availStatus"></span>
+  </div>
+
+</main>
+
+<!-- ══════════════════════════════════════════════
+  SCRIPTS
+══════════════════════════════════════════════ -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="secrets.js"></script>
+<script src="config.js"></script>
+<script>
+
+// ════════════════════════════════════════════════════════
+// DATABASE (anon key — RPC functions enforce Supabase Auth server-side)
+// ════════════════════════════════════════════════════════
+
+let adminDb = null
+
+function initDb() {
+  try {
+    adminDb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY)
+    return true
+  } catch(e) {
+    console.error('Supabase init failed:', e)
+    return false
+  }
+}
+
+// ════════════════════════════════════════════════════════
+// AUTH (real Supabase Auth sign-in — replaces the old shared-secret gate)
+// ════════════════════════════════════════════════════════
+
+async function signIn() {
+  const email = document.getElementById('gateEmail').value.trim()
+  const password = document.getElementById('gateInput').value.trim()
+  const { error } = await adminDb.auth.signInWithPassword({ email, password })
+  if (error) {
+    console.error('Sign-in error:', error)
+    const err = document.getElementById('gateError')
+    err.style.display = 'block'
+    setTimeout(() => err.style.display = 'none', 3000)
+    return
+  }
+  document.getElementById('gateOverlay').style.display = 'none'
+  init()
+}
+
+document.getElementById('gateBtn').addEventListener('click', signIn)
+document.getElementById('gateInput').addEventListener('keydown', e => {
+  if (e.key === 'Enter') signIn()
+})
+
+async function logout() {
+  await adminDb.auth.signOut()
+  location.reload()
+}
+
+async function checkSession() {
+  if (!initDb()) return
+  const { data: { session } } = await adminDb.auth.getSession()
+  if (session) {
+    document.getElementById('gateOverlay').style.display = 'none'
+    init()
+  }
+}
+checkSession()
+
+// ════════════════════════════════════════════════════════
+// STATE
+// ════════════════════════════════════════════════════════
+
+let allLeads       = []
+let allAppts       = []
+let leadsSortCol   = 'created_at'
+let leadsSortDir   = 'desc'
+let apptsSortCol   = 'scheduled_at'
+let apptsSortDir   = 'asc'
+let activeTierFilter = 'all'   // 'all' | 'A' | 'B' | 'C'
+
+// ════════════════════════════════════════════════════════
+// INIT
+// ════════════════════════════════════════════════════════
+
+async function init() {
+  if (!initDb()) return
+  await Promise.all([loadLeads(), loadAppts(), loadAvailability()])
+}
+
+async function reloadData() {
+  if (!adminDb && !initDb()) return
+  await Promise.all([loadLeads(), loadAppts(), loadAvailability()])
+}
+
+// ════════════════════════════════════════════════════════
+// LOAD DATA
+// ════════════════════════════════════════════════════════
+
+async function loadLeads() {
+  document.getElementById('leadsBody').innerHTML =
+    '<tr class="loading-row"><td colspan="5">Loading…</td></tr>'
+
+  const { data, error } = await adminDb
+    .rpc('get_all_leads')
+
+  if (error) {
+    console.error('Leads fetch error:', error)
+    document.getElementById('leadsBody').innerHTML =
+      `<tr class="empty-row"><td colspan="5">Error loading leads: ${esc(error.message)}</td></tr>`
+    return
+  }
+
+  allLeads = data || []
+  updateStats()
+  renderLeads(allLeads)
+}
+
+async function loadAppts() {
+  document.getElementById('apptBody').innerHTML =
+    '<tr class="loading-row"><td colspan="6">Loading…</td></tr>'
+
+  const { data, error } = await adminDb
+    .rpc('get_all_appointments')
+
+  if (error) {
+    console.error('Appointments fetch error:', error)
+    document.getElementById('apptBody').innerHTML =
+      `<tr class="empty-row"><td colspan="6">Error loading appointments: ${esc(error.message)}</td></tr>`
+    return
+  }
+
+  allAppts = data || []
+  updateStats()
+  renderAppts(allAppts)
+}
+
+// ════════════════════════════════════════════════════════
+// STATS
+// ════════════════════════════════════════════════════════
+
+function updateStats() {
+  document.getElementById('statLeads').textContent = allLeads.length
+  document.getElementById('statHot').textContent   = allLeads.filter(l => l.lead_tier === 'A').length
+
+  const confirmed = allAppts.filter(a => a.status === 'confirmed')
+  document.getElementById('statBookings').textContent = confirmed.length
+
+  const now  = new Date()
+  const in7d = new Date(now.getTime() + 7 * 86400000)
+  document.getElementById('statUpcoming').textContent =
+    confirmed.filter(a => { const t = new Date(a.scheduled_at); return t >= now && t <= in7d }).length
+}
+
+// ════════════════════════════════════════════════════════
+// RENDER
+// ════════════════════════════════════════════════════════
+
+// Human-readable labels for quiz answer keys
+const Q_LABELS = {
+  gender:'Gender', age:'Age', bloodSugar:'Blood sugar status', hba1c:'HbA1c',
+  duration:'Duration', medication:'Medication', challenges:'Challenges',
+  impact:'Work impact', outlook:'12-month outlook', tried:'Previously tried',
+  obstacle:'#1 obstacle', obstacleNote:'Extra note', eating:'Eating pattern',
+  work:'Work schedule', commitment:'Commitment', urgency:'Urgency',
+  investment:'Investment readiness', whyNow:'Why now'
+}
+
+function renderLeads(data) {
+  const body = document.getElementById('leadsBody')
+  if (!data.length) {
+    body.innerHTML = '<tr class="empty-row"><td colspan="7">No leads yet.</td></tr>'
+    return
+  }
+  body.innerHTML = data.map(l => {
+    const tier      = l.lead_tier  || '—'
+    const score     = l.lead_score != null ? l.lead_score : '—'
+    const flagHtml  = l.safety_flag ? ' <span class="pill pill-flag">⚠ Medical</span>' : ''
+    const tierClass = { A: 'pill-green', B: 'pill-amber', C: 'pill-grey' }[tier] || 'pill-grey'
+    const rowId     = 'lead-' + l.id
+
+    // Build quiz-answers expander content
+    let answersHtml = '<tr class="answers-row" id="ans-' + esc(l.id) + '" style="display:none;"><td colspan="7"><div class="answers-inner">'
+    const qa = l.quiz_answers || {}
+    for (const [k, v] of Object.entries(qa)) {
+      if (!v && v !== 0) continue
+      const label = Q_LABELS[k] || k
+      const val   = Array.isArray(v) ? v.join(', ') : String(v)
+      answersHtml += `<div class="ans-item"><div class="ans-q">${esc(label)}</div><div class="ans-v">${esc(val)}</div></div>`
+    }
+    answersHtml += '</div></td></tr>'
+
+    return `
+      <tr id="${esc(rowId)}" onclick="">
+        <td>${fmtDate(l.created_at)}</td>
+        <td>${esc(l.first_name || '—')}</td>
+        <td><a href="mailto:${esc(l.email)}" style="color:var(--green);text-decoration:none;">${esc(l.email)}</a></td>
+        <td><a href="https://wa.me/${esc((l.phone||'').replace(/\D/g,''))}" target="_blank" style="color:var(--green);text-decoration:none;">${esc(l.phone || '—')}</a></td>
+        <td><span class="pill ${tierClass}">${esc(tier)}</span>${flagHtml}</td>
+        <td>${esc(String(score))}</td>
+        <td><button class="action-btn" onclick="toggleAnswers('${esc(l.id)}', this)">View</button></td>
+      </tr>
+      ${answersHtml}
+    `
+  }).join('')
+}
+
+function toggleAnswers(id, btn) {
+  const row = document.getElementById('ans-' + id)
+  if (!row) return
+  const hidden = (row.style.display === 'none' || row.style.display === '')
+  row.style.display = hidden ? 'table-row' : 'none'
+  btn.textContent   = hidden ? 'Hide' : 'View'
+}
+
+function renderAppts(data) {
+  const body = document.getElementById('apptBody')
+  if (!data.length) {
+    body.innerHTML = '<tr class="empty-row"><td colspan="6">No appointments yet.</td></tr>'
+    return
+  }
+  body.innerHTML = data.map(a => `
+    <tr id="appt-row-${a.id}">
+      <td><strong>${fmtIST(a.scheduled_at)}</strong></td>
+      <td>${esc(a.first_name || '—')}</td>
+      <td><a href="mailto:${esc(a.email||'')}" style="color:var(--green);text-decoration:none;">${esc(a.email || '—')}</a></td>
+      <td><a href="https://wa.me/${esc((a.phone||'').replace(/\D/g,''))}" target="_blank" style="color:var(--green);text-decoration:none;">${esc(a.phone || '—')}</a></td>
+      <td id="appt-status-${a.id}">${pillHtml(a.status)}</td>
+      <td id="appt-action-${a.id}">
+        ${a.status === 'confirmed'
+          ? `<button class="action-btn" onclick="cancelAppt('${a.id}', this)">Cancel</button>`
+          : '<span style="opacity:.35;font-size:.76rem;">—</span>'}
+      </td>
+    </tr>
+  `).join('')
+}
+
+// ════════════════════════════════════════════════════════
+// CANCEL APPOINTMENT
+// ════════════════════════════════════════════════════════
+
+async function cancelAppt(id, btn) {
+  if (!confirm('Mark this appointment as cancelled? This cannot be undone from here.')) return
+  btn.disabled = true
+  btn.textContent = '…'
+
+  const { error } = await adminDb
+    .rpc('cancel_appointment', { appt_id: id })
+
+  if (error) {
+    btn.disabled = false
+    btn.textContent = 'Cancel'
+    alert('Failed to cancel. Check console.')
+    console.error(error)
+    return
+  }
+
+  const appt = allAppts.find(a => a.id === id)
+  if (appt) appt.status = 'cancelled'
+  updateStats()
+
+  document.getElementById(`appt-status-${id}`).innerHTML = pillHtml('cancelled')
+  document.getElementById(`appt-action-${id}`).innerHTML = '<span style="opacity:.35;font-size:.76rem;">—</span>'
+}
+
+// ════════════════════════════════════════════════════════
+// TABS
+// ════════════════════════════════════════════════════════
+
+function switchTab(name, btn) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'))
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'))
+  btn.classList.add('active')
+  document.getElementById(`sec-${name}`).classList.add('active')
+}
+
+// ════════════════════════════════════════════════════════
+// SEARCH / FILTER
+// ════════════════════════════════════════════════════════
+
+function filterLeads(q) {
+  q = (q || '').toLowerCase()
+  let filtered = allLeads.filter(l =>
+    [l.first_name, l.email, l.phone]
+      .some(v => (v||'').toLowerCase().includes(q))
+  )
+  if (activeTierFilter !== 'all') {
+    filtered = filtered.filter(l => (l.lead_tier || '—') === activeTierFilter)
+  }
+  renderLeads(filtered)
+}
+
+function setTierFilter(tier, btn) {
+  activeTierFilter = tier
+  document.querySelectorAll('.tier-btn').forEach(b => b.classList.remove('active'))
+  btn.classList.add('active')
+  filterLeads(document.querySelector('.search-input')?.value || '')
+}
+
+function filterAppts(q) {
+  q = q.toLowerCase()
+  renderAppts(allAppts.filter(a =>
+    [a.first_name, a.email, a.phone]
+      .some(v => (v||'').toLowerCase().includes(q))
+  ))
+}
+
+// ════════════════════════════════════════════════════════
+// SORT
+// ════════════════════════════════════════════════════════
+
+function sortLeads(col) {
+  if (leadsSortCol === col) leadsSortDir = leadsSortDir === 'asc' ? 'desc' : 'asc'
+  else { leadsSortCol = col; leadsSortDir = 'asc' }
+  renderLeads([...allLeads].sort(sorter(col, leadsSortDir)))
+}
+
+function sortAppts(col) {
+  if (apptsSortCol === col) apptsSortDir = apptsSortDir === 'asc' ? 'desc' : 'asc'
+  else { apptsSortCol = col; apptsSortDir = 'asc' }
+  renderAppts([...allAppts].sort(sorter(col, apptsSortDir)))
+}
+
+function sorter(col, dir) {
+  return (a, b) => {
+    let va = a[col] || '', vb = b[col] || ''
+    if (typeof va === 'string') va = va.toLowerCase()
+    if (typeof vb === 'string') vb = vb.toLowerCase()
+    return dir === 'asc' ? (va < vb ? -1 : va > vb ? 1 : 0) : (va > vb ? -1 : va < vb ? 1 : 0)
+  }
+}
+
+// ════════════════════════════════════════════════════════
+// EXPORT CSV
+// ════════════════════════════════════════════════════════
+
+function exportCSV(type) {
+  let headers, rows
+  if (type === 'leads') {
+    headers = ['Date Joined', 'Name', 'Email', 'Phone', 'Tier', 'Score', 'Safety Flag',
+               'Blood Sugar', 'HbA1c', 'Commitment', 'Urgency', 'Investment', 'Why Now']
+    rows = allLeads.map(l => {
+      const qa = l.quiz_answers || {}
+      return [
+        fmtDate(l.created_at), l.first_name||'', l.email||'', l.phone||'',
+        l.lead_tier||'', l.lead_score!=null?l.lead_score:'', l.safety_flag?'Yes':'',
+        qa.bloodSugar||'', qa.hba1c||'', qa.commitment||'', qa.urgency||'',
+        qa.investment||'', qa.whyNow||''
+      ]
+    })
+  } else {
+    headers = ['Date & Time (IST)', 'Name', 'Email', 'Phone', 'Status', 'Duration (min)']
+    rows = allAppts.map(a => [fmtIST(a.scheduled_at), a.first_name||'', a.email||'', a.phone||'', a.status||'', a.duration_minutes||20])
+  }
+
+  const csv = [headers, ...rows]
+    .map(row => row.map(cell => `"${String(cell).replace(/"/g, '""')}"`).join(','))
+    .join('\r\n')
+
+  const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' })
+  const url  = URL.createObjectURL(blob)
+  const a    = Object.assign(document.createElement('a'), {
+    href: url,
+    download: `${type}_${new Date().toISOString().slice(0,10)}.csv`
+  })
+  a.click()
+  URL.revokeObjectURL(url)
+}
+
+// ════════════════════════════════════════════════════════
+// HELPERS
+// ════════════════════════════════════════════════════════
+
+function fmtDate(iso) {
+  return new Date(iso).toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' })
+}
+
+function fmtIST(iso) {
+  return new Date(iso).toLocaleString('en-IN', {
+    timeZone: 'Asia/Kolkata',
+    day: '2-digit', month: 'short', year: 'numeric',
+    hour: '2-digit', minute: '2-digit', hour12: true
+  })
+}
+
+function pillHtml(status) {
+  const cls = { confirmed: 'pill-green', cancelled: 'pill-red' }[status] || 'pill-grey'
+  return `<span class="pill ${cls}">${esc(status)}</span>`
+}
+
+// ════════════════════════════════════════════════════════
+// AVAILABILITY
+// ════════════════════════════════════════════════════════
+
+const DAY_NAMES = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat']
+const DAY_ORDER = [1,2,3,4,5,6,0]   // Mon → Sun
+const HOUR_RANGE = Array.from({ length: 15 }, (_, i) => i + 6) // 6 AM – 8 PM
+
+let activeHours = new Set([8,9,10,11,12,13,14,15,16])
+let activeDays  = new Set([1,2,3,4,5])
+
+function buildAvailToggles() {
+  document.getElementById('dayToggles').innerHTML = DAY_ORDER.map(d =>
+    `<button class="tog ${activeDays.has(d) ? 'on' : ''}" onclick="toggleDay(${d}, this)">${DAY_NAMES[d]}</button>`
+  ).join('')
+
+  document.getElementById('hourToggles').innerHTML = HOUR_RANGE.map(h => {
+    const label = h < 12 ? `${h} AM` : h === 12 ? '12 PM' : `${h - 12} PM`
+    return `<button class="tog ${activeHours.has(h) ? 'on' : ''}" onclick="toggleHour(${h}, this)">${label}</button>`
+  }).join('')
+}
+
+function toggleDay(d, btn) {
+  activeDays.has(d) ? activeDays.delete(d) : activeDays.add(d)
+  btn.classList.toggle('on')
+}
+
+function toggleHour(h, btn) {
+  activeHours.has(h) ? activeHours.delete(h) : activeHours.add(h)
+  btn.classList.toggle('on')
+}
+
+async function loadAvailability() {
+  if (!adminDb) return
+  const { data } = await adminDb.from('settings').select('setting_key,setting_val')
+  if (!data) return
+  const h = data.find(r => r.setting_key === 'available_hours')
+  const d = data.find(r => r.setting_key === 'available_days')
+  if (h?.setting_val?.length) activeHours = new Set(h.setting_val)
+  if (d?.setting_val?.length) activeDays  = new Set(d.setting_val)
+  buildAvailToggles()
+}
+
+async function saveAvailability() {
+  const btn    = document.getElementById('saveAvailBtn')
+  const status = document.getElementById('availStatus')
+  btn.disabled = true
+  btn.textContent = 'Saving…'
+  status.style.display = 'none'
+
+  const hours = [...activeHours].sort((a, b) => a - b)
+  const days  = [...activeDays].sort((a, b) => a - b)
+
+  const [r1, r2] = await Promise.all([
+    adminDb.rpc('update_setting', { p_key: 'available_hours', p_val: hours }),
+    adminDb.rpc('update_setting', { p_key: 'available_days',  p_val: days  }),
+  ])
+
+  btn.disabled = false
+  btn.textContent = 'Save Changes'
+
+  if (r1.error || r2.error) {
+    status.textContent = '✗ Failed to save — check console'
+    status.className = 'avail-status err'
+    console.error(r1.error || r2.error)
+  } else {
+    status.textContent = '✓ Saved — calendar updated instantly for all visitors'
+    status.className = 'avail-status ok'
+  }
+  status.style.display = 'inline'
+  setTimeout(() => status.style.display = 'none', 5000)
+}
+
+function esc(str) {
+  return String(str)
+    .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+    .replace(/"/g,'&quot;').replace(/'/g,'&#39;')
+}
+
+</script>
+</body>
+</html>

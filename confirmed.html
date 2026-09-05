@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>You're Booked! | Ayush</title>
+  <link rel="icon" type="image/png" href="assets/placeholder-logo.svg" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --bg:          #FBF9F6;
+      --text-h:      #1E2D24;
+      --text-b:      #3A443F;
+      --green:       #3D6B4A;
+      --green-pale:  #EBF2E8;
+      --green-muted: #C8D5C0;
+      --border:      #D7CDCC;
+      --white:       #FFFFFF;
+      --serif:       'Playfair Display', Georgia, serif;
+      --sans:        'DM Sans', system-ui, sans-serif;
+      --shadow:      0 6px 30px rgba(30,45,36,.10);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: var(--sans);
+      background: var(--bg);
+      color: var(--text-b);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 20px;
+    }
+
+    .card {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      box-shadow: var(--shadow);
+      max-width: 560px;
+      width: 100%;
+      padding: 48px 40px;
+      text-align: center;
+      isolation: isolate;
+    }
+    .logo-wrap {
+      isolation: isolate;
+      background: var(--bg);
+      border-radius: 12px;
+      display: inline-flex;
+      padding: 8px 16px;
+      margin-bottom: 20px;
+    }
+
+    .logo { height: 48px; width: auto; mix-blend-mode: multiply; margin: 0 auto 28px; }
+
+    /* Green checkmark circle */
+    .check-circle {
+      width: 72px; height: 72px;
+      border-radius: 50%;
+      background: var(--green-pale);
+      border: 2px solid var(--green-muted);
+      display: flex; align-items: center; justify-content: center;
+      margin: 0 auto 24px;
+    }
+    .check-circle svg { width: 36px; height: 36px; color: var(--green); }
+
+    .title {
+      font-family: var(--serif);
+      font-size: 1.8rem;
+      font-weight: 600;
+      color: var(--text-h);
+      margin-bottom: 8px;
+      line-height: 1.25;
+    }
+    .subtitle {
+      font-size: 1rem;
+      color: var(--text-b);
+      font-weight: 300;
+      margin-bottom: 32px;
+    }
+
+    /* Booking summary box */
+    .summary {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 24px 28px;
+      margin-bottom: 32px;
+      text-align: left;
+    }
+    .summary-label {
+      font-size: .7rem;
+      font-weight: 500;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--green);
+      margin-bottom: 12px;
+    }
+    .summary-row {
+      display: flex; align-items: flex-start; gap: 10px;
+      font-size: .88rem; color: var(--text-b);
+      margin-bottom: 10px;
+    }
+    .summary-row:last-child { margin-bottom: 0; }
+    .summary-row svg { width: 16px; height: 16px; flex-shrink: 0; color: var(--green); margin-top: 2px; }
+    .summary-row strong { color: var(--text-h); }
+
+    /* Action buttons */
+    .actions {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+
+    .btn {
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+      width: 100%;
+      padding: 13px 20px;
+      border-radius: 50px;
+      font-family: var(--sans);
+      font-size: .92rem;
+      font-weight: 500;
+      text-decoration: none;
+      cursor: pointer;
+      transition: all .3s;
+      border: none;
+    }
+    .btn--green {
+      background: var(--green);
+      color: var(--white);
+    }
+    .btn--green:hover { background: var(--text-h); transform: translateY(-1px); }
+    .btn--outline {
+      background: transparent;
+      color: var(--text-h);
+      border: 1.5px solid var(--border);
+    }
+    .btn--outline:hover { border-color: var(--text-h); }
+
+    .note {
+      font-size: .78rem;
+      color: var(--text-b);
+      opacity: .55;
+      line-height: 1.6;
+    }
+
+    /* Prompt nudging the visitor into the questions step */
+    .next-prompt {
+      font-size: .9rem;
+      color: var(--text-b);
+      line-height: 1.55;
+      margin-bottom: 18px;
+    }
+    .next-prompt strong { color: var(--text-h); }
+
+    @media (max-width: 560px) {
+      .card { padding: 32px 24px; }
+      .title { font-size: 1.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="card">
+  <div class="logo-wrap">
+    <img src="assets/placeholder-logo.svg" alt="Ayush" class="logo" style="margin:0;" />
+  </div>
+
+  <!-- Green tick -->
+  <div class="check-circle">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M5 12l5 5L20 7"/>
+    </svg>
+  </div>
+
+  <h1 class="title" id="titleText">You're confirmed!</h1>
+  <p class="subtitle" id="subtitleText">Your discovery call has been booked.</p>
+
+  <!-- Booking summary (date, time, duration, location) -->
+  <div class="summary">
+    <div class="summary-label">Your booking details</div>
+
+    <div class="summary-row">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+        <rect x="3" y="4" width="18" height="18" rx="2"/>
+        <path d="M16 2v4M8 2v4M3 10h18"/>
+      </svg>
+      <span><strong id="bookingDate"></strong></span>
+    </div>
+
+    <div class="summary-row">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+        <circle cx="12" cy="12" r="9"/>
+        <path d="M12 7v5l3 3" stroke-linecap="round"/>
+      </svg>
+      <span id="bookingTime"></span>
+    </div>
+
+    <div class="summary-row">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+        <path d="M15 10a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>
+        <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/>
+      </svg>
+      <span id="bookingLocation">Online via Google Meet or WhatsApp Video</span>
+    </div>
+  </div>
+
+  <!-- One last step — nudge into the questions -->
+  <p class="next-prompt"><strong>One last step</strong>: answer a few quick questions so Ayush can tailor your call to you.</p>
+
+  <!-- Buttons -->
+  <div class="actions">
+    <!-- Primary next step: the short questionnaire (funnel.html) -->
+    <a href="funnel.html" id="nextLink" class="btn btn--green">
+      Next: A Few Quick Questions →
+    </a>
+
+    <!-- "Add to Google Calendar" — this is a special URL that opens Google Calendar
+         with all the details pre-filled. The user just clicks "Save". -->
+    <a href="#" id="gcalLink" class="btn btn--outline" target="_blank" rel="noopener">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" width="18" height="18">
+        <rect x="3" y="4" width="18" height="18" rx="2"/>
+        <path d="M16 2v4M8 2v4M3 10h18"/>
+      </svg>
+      Add to Google Calendar
+    </a>
+
+    <!-- WhatsApp link to coach -->
+    <a href="#" id="waLink" class="btn btn--outline" target="_blank" rel="noopener">
+      <svg viewBox="0 0 24 24" fill="currentColor" width="18" height="18">
+        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/>
+      </svg>
+      Message Coach on WhatsApp
+    </a>
+  </div>
+
+  <p class="note" id="footerNote">
+    A confirmation has been saved. Look out for a message from Ayush before your call.
+  </p>
+</div>
+
+
+<!-- ════════════════════════════════════════════════════════
+  PLAIN ENGLISH — HOW THIS PAGE WORKS:
+
+  This page reads the booking details that book.html saved into
+  sessionStorage (the browser's temporary memory).
+
+  It then:
+  1. Shows the date and time in a human-friendly format.
+  2. Builds a special Google Calendar URL with all the details
+     pre-filled. When the user clicks "Add to Google Calendar",
+     Google Calendar opens with a pre-filled event — they just
+     click "Save". No API key needed, no account setup.
+  3. Shows a WhatsApp link to message the coach.
+  4. Clears sessionStorage (we no longer need it).
+════════════════════════════════════════════════════════ -->
+<script src="secrets.js"></script>
+<script src="config.js"></script>
+<script>
+
+  // Read the booking data saved by book.html
+  let booking = null
+  try { booking = JSON.parse(sessionStorage.getItem('bookingData') || 'null') } catch {}
+
+  if (booking) {
+    // Personalise the greeting
+    if (booking.firstName && booking.firstName !== 'there') {
+      document.getElementById('titleText').textContent = `You're confirmed, ${booking.firstName}!`
+    }
+
+    // Format the date for display (e.g. "Thursday, 10 June 2026")
+    const [y, m, d] = booking.dateStr.split('-').map(Number)
+    const displayDate = new Date(y, m - 1, d)
+      .toLocaleDateString('en-IN', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })
+
+    // Format the time (e.g. "08:00 AM IST")
+    const h12 = booking.hour === 0 ? 12 : booking.hour > 12 ? booking.hour - 12 : booking.hour
+    const suffix = booking.hour >= 12 ? 'PM' : 'AM'
+    const displayTime = `${String(h12).padStart(2,'0')}:00 ${suffix} IST (${booking.duration} min)`
+
+    document.getElementById('bookingDate').textContent = displayDate
+    document.getElementById('bookingTime').textContent = displayTime
+    document.getElementById('bookingLocation').textContent = MEETING_LOCATION
+
+    // ── Build the Google Calendar "Add to Calendar" link ──────
+    // Google Calendar accepts a special URL with the event details in it.
+    // Format: YYYYMMDDTHHMMSSZ (no dashes or colons, ends in Z for UTC)
+    //
+    // We stored the UTC ISO string (e.g. "2026-06-10T02:30:00.000Z")
+    // We strip the dashes, colons, and milliseconds to get the GCal format.
+    const startUTC = new Date(booking.isoUTC)
+    const endUTC   = new Date(startUTC.getTime() + booking.duration * 60 * 1000)
+
+    function toGCalTime(date) {
+      return date.toISOString().replace(/[-:]/g, '').split('.')[0] + 'Z'
+    }
+
+    const gcalParams = new URLSearchParams({
+      action:   'TEMPLATE',
+      text:     `Discovery Call with ${COACH_NAME}`,
+      dates:    `${toGCalTime(startUTC)}/${toGCalTime(endUTC)}`,
+      details:  `Your ${booking.duration} minute discovery call with ${COACH_NAME}, Diabetes Freedom Coach.\n\nWe'll discuss your health goals and how plant based metabolic coaching can help you.\n\nIf you need to reach out beforehand: https://wa.me/${COACH_WHATSAPP}`,
+      location: MEETING_LOCATION
+    })
+
+    document.getElementById('gcalLink').href =
+      `https://calendar.google.com/calendar/render?${gcalParams.toString()}`
+
+    // ── WhatsApp link ─────────────────────────────────────────
+    const waText = encodeURIComponent(
+      `Hi Ayush! I've just booked a discovery call for ${displayDate} at ${displayTime}. Looking forward to speaking with you!`
+    )
+    document.getElementById('waLink').href = `https://wa.me/${COACH_WHATSAPP}?text=${waText}`
+
+    // Keep leadData/bookingData in sessionStorage — the questions step
+    // (funnel.html) still needs the contact details to save the lead.
+    // Everything is cleared once the questions are submitted.
+
+  } else {
+    // If someone lands here directly (no booking data), show a generic message
+    document.getElementById('subtitleText').textContent =
+      'If you just booked a call, check your details with the coach on WhatsApp.'
+    document.getElementById('gcalLink').style.display = 'none'
+    document.getElementById('waLink').href = `https://wa.me/${COACH_WHATSAPP}`
+  }
+
+</script>
+</body>
+</html>

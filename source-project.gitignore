@@ -1,0 +1,12 @@
+# Holds a Google OAuth client secret — must never be committed
+get-refresh-token.mjs
+node_modules/
+package.json
+package-lock.json
+test-*.png
+admin.html
+admin-setup.sql
+.netlifyignore
+# admin-dashboard.html is intentionally NOT ignored — deployed online
+
+.vercel

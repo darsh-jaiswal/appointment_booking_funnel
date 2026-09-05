@@ -1,0 +1,28 @@
+# Keep these OFF the public deploy (CLI uploads the local folder by default).
+# secrets.js IS intentionally uploaded (needed for Supabase URL + anon key).
+
+.git
+.claude
+node_modules
+supabase
+
+# build/meta, not web assets
+package.json
+package-lock.json
+.netlifyignore
+
+# server-side / tooling that must never be web-served
+get-refresh-token.mjs
+send-confirmation.ts
+admin-setup.sql
+admin-auth-migration.sql
+quiz-migration.sql
+secrets.example.js
+
+# legacy duplicate of admin-dashboard.html — never meant to be public
+admin.html
+
+# internal docs
+HOW_IT_ALL_WORKS.md
+HOW_IT_ALL_WORKS_Darshj.md
+test-*.png

@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Get Instant Access | Ayush</title>
+  <link rel="icon" type="image/png" href="assets/placeholder-logo.svg" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --bg:          #FBF9F6;
+      --text-h:      #1E2D24;
+      --text-b:      #3A443F;
+      --green:       #3D6B4A;
+      --green-light: #5A8A66;
+      --green-muted: #C8D5C0;
+      --green-pale:  #EBF2E8;
+      --border:      #D7CDCC;
+      --white:       #FFFFFF;
+      --serif:       'Playfair Display', Georgia, serif;
+      --sans:        'DM Sans', system-ui, sans-serif;
+      --shadow:      0 6px 30px rgba(30,45,36,.10);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: var(--sans);
+      background: var(--bg);
+      color: var(--text-b);
+      min-height: 100vh;
+    }
+
+    /* ── Logo bar ── */
+    .top-bar {
+      text-align: center;
+      padding: 18px 24px 14px;
+      border-bottom: 1px solid var(--border);
+      background: var(--white);
+    }
+    .top-bar img { height: 44px; mix-blend-mode: multiply; }
+
+    /* ── Main layout ── */
+    .page-wrap {
+      max-width: 1080px;
+      margin: 0 auto;
+      padding: 48px 24px 72px;
+      display: grid;
+      grid-template-columns: 1fr 420px;
+      gap: 56px;
+      align-items: start;
+    }
+
+    /* ── Left column ── */
+    .left-col { }
+
+    .eyebrow {
+      font-size: .68rem;
+      font-weight: 600;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      color: var(--green);
+      margin-bottom: 14px;
+    }
+
+    .headline {
+      font-family: var(--serif);
+      font-size: 2.15rem;
+      font-weight: 700;
+      color: var(--text-h);
+      line-height: 1.2;
+      margin-bottom: 16px;
+    }
+    .headline em { font-style: normal; color: var(--green); }
+
+    .subline {
+      font-size: 1rem;
+      color: var(--text-b);
+      line-height: 1.65;
+      margin-bottom: 28px;
+      opacity: .8;
+    }
+
+    /* Benefit list */
+    .benefits { list-style: none; display: flex; flex-direction: column; gap: 10px; margin-bottom: 32px; }
+    .benefits li {
+      font-size: .93rem;
+      color: var(--text-b);
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      line-height: 1.4;
+    }
+    .benefits li::before {
+      content: '✓';
+      color: var(--green);
+      font-weight: 700;
+      font-size: 1rem;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    /* ── Right column — form card ── */
+    .form-card {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 36px 32px;
+      box-shadow: var(--shadow);
+      position: sticky;
+      top: 24px;
+    }
+
+    .form-heading {
+      font-family: var(--serif);
+      font-size: 1.35rem;
+      font-weight: 600;
+      color: var(--text-h);
+      margin-bottom: 4px;
+    }
+    .form-sub { font-size: .82rem; color: var(--text-b); opacity: .6; margin-bottom: 22px; line-height: 1.45; }
+
+    /* Tier badge (shown if quiz was completed) */
+    .tier-banner {
+      display: none;
+      border-radius: 10px;
+      padding: 10px 14px;
+      font-size: .82rem;
+      font-weight: 500;
+      margin-bottom: 18px;
+      line-height: 1.45;
+    }
+    .tier-banner.tier-a { background: var(--green-pale); color: var(--green); display: block; }
+    .tier-banner.tier-b { background: #FEF9EE; color: #A0692A; display: block; }
+    .tier-banner.tier-c { background: #F4F4F4; color: #777; display: block; }
+
+    .field { margin-bottom: 14px; }
+    .field label { display: block; font-size: .8rem; font-weight: 500; color: var(--text-h); margin-bottom: 5px; }
+    .field label .star { color: var(--green); margin-left: 2px; }
+    .field input {
+      width: 100%; padding: 11px 14px;
+      border: 1.5px solid var(--border); border-radius: 10px;
+      font-family: var(--sans); font-size: .9rem; color: var(--text-h);
+      background: var(--bg); outline: none; transition: border-color .2s;
+    }
+    .field input:focus { border-color: var(--green); }
+    .field input::placeholder { color: var(--text-b); opacity: .38; }
+
+    .phone-row {
+      display: flex; border: 1.5px solid var(--border); border-radius: 10px;
+      overflow: hidden; background: var(--bg); transition: border-color .2s;
+    }
+    .phone-row:focus-within { border-color: var(--green); }
+    .phone-prefix {
+      display: flex; align-items: center; gap: 5px;
+      padding: 11px 12px 11px 14px; font-size: .9rem; color: var(--text-h);
+      border-right: 1.5px solid var(--border); white-space: nowrap; flex-shrink: 0;
+    }
+    .phone-row input { border: none; border-radius: 0; background: transparent; flex: 1; outline: none; font-family: var(--sans); font-size: .9rem; color: var(--text-h); padding: 11px 14px; }
+
+    .error-box {
+      background: #fee2e2; border: 1px solid #fecaca; color: #b91c1c;
+      border-radius: 8px; padding: 11px 14px; font-size: .83rem;
+      margin-bottom: 14px; display: none;
+    }
+
+    .btn-submit {
+      width: 100%;
+      padding: 14px;
+      background: var(--green);
+      color: #fff;
+      border: none;
+      border-radius: 50px;
+      font-family: var(--sans);
+      font-size: .97rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all .3s;
+      margin-top: 6px;
+    }
+    .btn-submit:hover:not(:disabled) {
+      background: var(--text-h);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(30,45,36,.22);
+    }
+    .btn-submit:disabled { opacity: .38; cursor: not-allowed; transform: none; box-shadow: none; }
+
+    .form-note { font-size: .72rem; text-align: center; color: var(--text-b); opacity: .5; margin-top: 10px; }
+
+    /* ── Disclaimer ── */
+    .disclaimer {
+      font-size: .69rem; color: var(--text-b); opacity: .4;
+      text-align: center; margin-top: 24px; line-height: 1.5; padding: 0 8px;
+    }
+
+    /* ── Responsive ── */
+    @media (max-width: 860px) {
+      .page-wrap {
+        grid-template-columns: 1fr;
+        gap: 36px;
+        padding: 32px 20px 60px;
+      }
+      .form-card { position: static; }
+      .headline { font-size: 1.7rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Logo -->
+<div class="top-bar">
+  <img src="assets/placeholder-logo.svg" alt="Ayush, Diabetes Freedom Coach" />
+</div>
+
+<div class="page-wrap">
+
+  <!-- ── Left: hero + video ── -->
+  <div class="left-col">
+    <p class="eyebrow">Training for serious results</p>
+    <h1 class="headline">How Corporate Professionals Are Reducing Their <em>HbA1c below 6.4%</em> and Stabilising Blood Sugar in 90&nbsp;Days</h1>
+    <p class="subline">Without extreme diets, quitting their job, or depending only on medication</p>
+
+    <ul class="benefits">
+      <li>A proven 90 day framework built around your work schedule and lifestyle</li>
+      <li>Personal guidance from Ayush, not a generic app or a one size fits all plan</li>
+      <li>Measurable results: lower HbA1c, stable energy, and no mid afternoon crashes</li>
+    </ul>
+  </div>
+
+  <!-- ── Right: form card ── -->
+  <div class="right-col">
+    <div class="form-card">
+      <h2 class="form-heading">Get Instant Access</h2>
+      <p class="form-sub">Enter your details to confirm your free discovery call.</p>
+
+      <!-- Tier banner (populated by JS if quiz was completed) -->
+      <div class="tier-banner" id="tierBanner"></div>
+
+      <div class="error-box" id="errorBox"></div>
+
+      <form id="accessForm" novalidate>
+        <div class="field">
+          <label for="firstName">First Name</label>
+          <input type="text" id="firstName" placeholder="Your first name" autocomplete="given-name" />
+        </div>
+        <div class="field">
+          <label for="email">Email <span class="star">*</span></label>
+          <input type="email" id="email" placeholder="your@email.com" autocomplete="email" required />
+        </div>
+        <div class="field">
+          <label for="phone">Phone <span class="star">*</span></label>
+          <div class="phone-row">
+            <div class="phone-prefix">🇮🇳 &nbsp;+91</div>
+            <input type="tel" id="phone" placeholder="10 digit mobile number" autocomplete="tel" required />
+          </div>
+        </div>
+        <div class="field">
+          <label for="profession">Profession / Job Title <span class="star">*</span></label>
+          <input type="text" id="profession" placeholder="e.g. Software Engineer, Manager" autocomplete="organization-title" required />
+        </div>
+        <button type="submit" class="btn-submit" id="submitBtn">Get Access Now</button>
+        <p class="form-note">🔒 Your information is safe and will never be shared.</p>
+      </form>
+
+      <p class="disclaimer">
+        This programme supports healthy lifestyle change and is not a substitute for medical advice.
+        Results vary. Always consult your doctor before making changes to medication.
+      </p>
+    </div>
+  </div>
+
+</div><!-- /page-wrap -->
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="secrets.js"></script>
+<script src="config.js"></script>
+<script>
+
+// ── Form submit ──
+// Registration is the FIRST step now: collect contact details, then send
+// the dedicated video page, then the booking calendar. We deliberately do NOT
+// write to the database here. The lead row is saved at the very end
+// (funnel.html) so the contact details and the quiz answers land together.
+document.getElementById('accessForm').addEventListener('submit', (e) => {
+  e.preventDefault()
+
+  const firstName  = document.getElementById('firstName').value.trim()
+  const email      = document.getElementById('email').value.trim()
+  const phone      = document.getElementById('phone').value.trim()
+  const profession = document.getElementById('profession').value.trim()
+
+  if (!email || !phone || !profession) return showError('Please fill in all required fields (marked *).')
+  if (!email.includes('@') || !email.includes('.')) return showError('Please enter a valid email address.')
+  if (phone.replace(/\D/g, '').length < 10) return showError('Please enter a valid 10 digit phone number.')
+
+  hideError()
+
+  const phoneE164 = '+91' + phone.replace(/\D/g, '')
+
+  // Carry contact details forward to video.html, book.html (calendar) and funnel.html (questions).
+  sessionStorage.setItem('leadData', JSON.stringify({
+    firstName, email, phone: phoneE164, profession
+  }))
+
+  window.location.href = 'video.html'
+})
+
+function showError(msg) {
+  const b = document.getElementById('errorBox')
+  b.textContent = msg
+  b.style.display = 'block'
+}
+function hideError() {
+  document.getElementById('errorBox').style.display = 'none'
+}
+
+</script>
+</body>
+</html>

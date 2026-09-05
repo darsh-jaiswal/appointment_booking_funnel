@@ -1,0 +1,1134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Get Your Free Diabetes Reset Plan | Ayush</title>
+  <link rel="icon" type="image/png" href="assets/placeholder-logo.svg" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ── Design tokens (match existing site) ── */
+    :root {
+      --bg:          #FBF9F6;
+      --text-h:      #1E2D24;
+      --text-b:      #3A443F;
+      --green:       #3D6B4A;
+      --green-light: #5A8A66;
+      --green-muted: #C8D5C0;
+      --green-pale:  #EBF2E8;
+      --border:      #D7CDCC;
+      --white:       #FFFFFF;
+      --serif:       'Playfair Display', Georgia, serif;
+      --sans:        'DM Sans', system-ui, sans-serif;
+      --shadow:      0 6px 30px rgba(30,45,36,.10);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: var(--sans);
+      background: var(--bg);
+      color: var(--text-b);
+      min-height: 100vh;
+    }
+
+    /* ── Logo bar ── */
+    .top-bar {
+      text-align: center;
+      padding: 16px 24px 0;
+    }
+    .top-bar img { height: 46px; mix-blend-mode: multiply; }
+
+    /* ── Progress bar ── */
+    .progress-wrap {
+      max-width: 520px;
+      margin: 12px auto 0;
+      padding: 0 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .progress-track {
+      flex: 1;
+      height: 4px;
+      background: var(--border);
+      border-radius: 2px;
+      overflow: hidden;
+    }
+    .progress-fill {
+      height: 100%;
+      background: var(--green);
+      border-radius: 2px;
+      transition: width .5s ease;
+      width: 0%;
+    }
+    .progress-pct {
+      font-size: .7rem;
+      color: var(--text-b);
+      opacity: .5;
+      white-space: nowrap;
+      min-width: 30px;
+      text-align: right;
+    }
+
+    /* ── Quiz wrapper ── */
+    .quiz-wrap {
+      max-width: 520px;
+      margin: 0 auto;
+      padding: 16px 20px 72px;
+    }
+
+    /* ── Back button ── */
+    .back-btn {
+      background: none;
+      border: none;
+      color: var(--text-b);
+      font-family: var(--sans);
+      font-size: .84rem;
+      cursor: pointer;
+      opacity: .5;
+      padding: 4px 0;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      transition: opacity .2s;
+    }
+    .back-btn:hover { opacity: 1; }
+    .back-btn[hidden] { display: none !important; }
+
+    /* ── Screens ── */
+    .screen { display: none; }
+    .screen.active { display: block; }
+
+    /* ── Question heading ── */
+    .q-label {
+      font-size: .68rem;
+      font-weight: 500;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: var(--green);
+      margin-bottom: 8px;
+    }
+    .q-heading {
+      font-family: var(--serif);
+      font-size: 1.4rem;
+      font-weight: 600;
+      color: var(--text-h);
+      line-height: 1.25;
+      margin-bottom: 6px;
+    }
+    .q-sub {
+      font-size: .84rem;
+      color: var(--text-b);
+      opacity: .7;
+      margin-bottom: 22px;
+      line-height: 1.5;
+    }
+
+    /* ── Standard option button ── */
+    .opt-btn {
+      width: 100%;
+      padding: 13px 16px;
+      border: 1.5px solid var(--border);
+      border-radius: 12px;
+      background: var(--white);
+      font-family: var(--sans);
+      font-size: .93rem;
+      color: var(--text-h);
+      text-align: left;
+      cursor: pointer;
+      transition: all .15s;
+      margin-bottom: 9px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      line-height: 1.3;
+    }
+    .opt-btn:hover { border-color: var(--green); background: var(--green-pale); }
+    .opt-btn.selected {
+      border-color: var(--green);
+      background: var(--green-pale);
+      color: var(--green);
+      font-weight: 500;
+    }
+    /* circle check on the right */
+    .opt-check {
+      width: 20px; height: 20px;
+      border-radius: 50%;
+      border: 1.5px solid var(--border);
+      display: flex; align-items: center; justify-content: center;
+      transition: all .15s;
+      margin-left: auto;
+      flex-shrink: 0;
+    }
+    .opt-btn.selected .opt-check { background: var(--green); border-color: var(--green); }
+    .opt-btn.selected .opt-check::after {
+      content: '';
+      width: 6px; height: 6px;
+      background: #fff;
+      border-radius: 50%;
+    }
+    /* square check for multi-select */
+    .opt-btn.multi .opt-check { border-radius: 5px; }
+
+    /* ── Portrait cards (S2 gender, S3 age) ── */
+    .card-grid-2   { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 8px; }
+    .card-grid-2x2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 8px; }
+
+    .portrait-card {
+      border: 1.5px solid var(--border);
+      border-radius: 14px;
+      overflow: hidden;
+      background: var(--white);
+      cursor: pointer;
+      transition: border-color .15s, box-shadow .15s;
+      user-select: none;
+    }
+    .portrait-card:hover { border-color: var(--green); box-shadow: 0 4px 16px rgba(61,107,74,.12); }
+    .portrait-card.selected { border-color: var(--green); box-shadow: 0 4px 16px rgba(61,107,74,.18); }
+    .card-img {
+      aspect-ratio: 1;
+      background: #EEF0F8;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 4rem;
+    }
+    .age-card .card-img { aspect-ratio: 4/3; font-size: 3rem; }
+    .card-label {
+      background: var(--green);
+      color: #fff;
+      text-align: center;
+      padding: 9px 6px;
+      font-size: .86rem;
+      font-weight: 500;
+      transition: background .15s;
+    }
+    .portrait-card.selected .card-label { background: var(--text-h); }
+
+    /* ── Interstitials ── */
+    .interstitial { text-align: center; padding: 8px 0; }
+
+    /* Assessment intro (S1) */
+    .assess-icon { font-size: 2.8rem; margin-bottom: 14px; }
+    .assess-points {
+      background: var(--green-pale);
+      border: 1px solid var(--green-muted);
+      border-radius: 14px;
+      padding: 18px 22px;
+      text-align: left;
+      margin: 20px 0 8px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .assess-point {
+      font-size: .9rem;
+      color: var(--text-b);
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      line-height: 1.4;
+    }
+    .assess-check { color: var(--green); font-weight: 700; font-size: 1rem; flex-shrink: 0; }
+
+    .interstitial-title {
+      font-family: var(--serif);
+      font-size: 1.4rem;
+      font-weight: 600;
+      color: var(--text-h);
+      line-height: 1.25;
+      margin-bottom: 8px;
+    }
+    .interstitial-sub {
+      font-size: .88rem;
+      color: var(--text-b);
+      opacity: .7;
+      margin-bottom: 10px;
+      line-height: 1.6;
+    }
+    .sources-link {
+      display: inline-block;
+      font-size: .74rem;
+      color: var(--green);
+      border-bottom: 1px dashed var(--green-muted);
+      cursor: pointer;
+      margin-bottom: 28px;
+    }
+
+    /* Personalization card (S4) */
+    .person-card {
+      background: var(--green-pale);
+      border: 1px solid var(--green-muted);
+      border-radius: 14px;
+      padding: 22px;
+      text-align: center;
+      margin-bottom: 24px;
+    }
+    .person-card .greeting { font-size: 1.8rem; margin-bottom: 8px; }
+    .person-card p { font-size: .92rem; color: var(--text-b); line-height: 1.55; }
+
+    /* ── Continue button ── */
+    .btn-continue {
+      width: 100%;
+      padding: 14px;
+      background: var(--green);
+      color: #fff;
+      border: none;
+      border-radius: 50px;
+      font-family: var(--sans);
+      font-size: .97rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all .3s;
+      margin-top: 6px;
+    }
+    .btn-continue:hover:not(:disabled) {
+      background: var(--text-h);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(30,45,36,.22);
+    }
+    .btn-continue:disabled { opacity: .38; cursor: not-allowed; transform: none; box-shadow: none; }
+
+    /* ── Optional free-text (S13) ── */
+    .opt-textarea {
+      width: 100%;
+      padding: 12px 14px;
+      border: 1.5px solid var(--border);
+      border-radius: 10px;
+      font-family: var(--sans);
+      font-size: .9rem;
+      color: var(--text-h);
+      background: var(--white);
+      resize: none;
+      outline: none;
+      transition: border-color .2s, opacity .3s;
+      margin-top: 16px;
+      min-height: 68px;
+      display: none;
+      opacity: 0;
+    }
+    .opt-textarea.visible { display: block; opacity: 1; }
+    .opt-textarea:focus { border-color: var(--green); }
+
+    /* ── S19 open text ── */
+    .why-input {
+      width: 100%;
+      padding: 14px;
+      border: 1.5px solid var(--border);
+      border-radius: 12px;
+      font-family: var(--sans);
+      font-size: .95rem;
+      color: var(--text-h);
+      background: var(--white);
+      resize: none;
+      outline: none;
+      transition: border-color .2s;
+      margin-bottom: 16px;
+      min-height: 88px;
+    }
+    .why-input:focus { border-color: var(--green); }
+
+    /* ── S20 building plan ── */
+    .building-wrap { text-align: center; padding: 20px 0 28px; }
+    .building-spinner {
+      width: 48px; height: 48px;
+      border: 3px solid var(--green-muted);
+      border-top-color: var(--green);
+      border-radius: 50%;
+      margin: 0 auto 22px;
+      animation: spin 1s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .building-steps {
+      display: flex; flex-direction: column; gap: 8px;
+      max-width: 280px; margin: 0 auto; text-align: left;
+    }
+    .build-step {
+      font-size: .84rem; color: var(--text-b);
+      opacity: 0; transition: opacity .4s;
+      display: flex; gap: 8px; align-items: flex-start;
+    }
+    .build-step.visible { opacity: 1; }
+    .build-step.done { color: var(--green); font-weight: 500; }
+
+    .result-reveal { display: none; }
+    .result-reveal.show { display: block; }
+
+    .tier-badge {
+      display: inline-block;
+      padding: 5px 16px;
+      border-radius: 20px;
+      font-size: .76rem;
+      font-weight: 600;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      margin-bottom: 14px;
+    }
+    .tier-a { background: var(--green-pale); color: var(--green); }
+    .tier-b { background: #FEF9EE; color: #A0692A; }
+    .tier-c { background: #F4F4F4; color: #777; }
+
+    .result-card {
+      background: var(--green-pale);
+      border: 1px solid var(--green-muted);
+      border-radius: 16px;
+      padding: 26px;
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    .result-card .result-headline {
+      font-family: var(--serif);
+      font-size: 1.3rem;
+      color: var(--text-h);
+      font-weight: 600;
+      margin-bottom: 10px;
+      line-height: 1.3;
+    }
+    .result-card p { font-size: .88rem; color: var(--text-b); line-height: 1.6; }
+
+    .safety-notice {
+      background: #FEF3CD;
+      border: 1px solid #F8D976;
+      border-radius: 10px;
+      padding: 14px 18px;
+      font-size: .82rem;
+      color: #7D5A00;
+      margin-bottom: 18px;
+      line-height: 1.55;
+      display: none;
+    }
+    .safety-notice.show { display: block; }
+
+    /* ── S21 Registration ── */
+    .reg-card {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 32px 28px;
+      box-shadow: var(--shadow);
+    }
+    .reg-heading {
+      font-family: var(--serif);
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: var(--text-h);
+      margin-bottom: 4px;
+    }
+    .reg-sub { font-size: .82rem; color: var(--text-b); opacity: .6; margin-bottom: 22px; }
+
+    .field { margin-bottom: 14px; }
+    .field label { display: block; font-size: .8rem; font-weight: 500; color: var(--text-h); margin-bottom: 5px; }
+    .field label .star { color: var(--green); margin-left: 2px; }
+    .field input {
+      width: 100%; padding: 11px 14px;
+      border: 1.5px solid var(--border); border-radius: 10px;
+      font-family: var(--sans); font-size: .9rem; color: var(--text-h);
+      background: var(--bg); outline: none; transition: border-color .2s;
+    }
+    .field input:focus { border-color: var(--green); }
+    .field input::placeholder { color: var(--text-b); opacity: .38; }
+
+    .phone-row {
+      display: flex; border: 1.5px solid var(--border); border-radius: 10px;
+      overflow: hidden; background: var(--bg); transition: border-color .2s;
+    }
+    .phone-row:focus-within { border-color: var(--green); }
+    .phone-prefix {
+      display: flex; align-items: center; gap: 5px;
+      padding: 11px 12px 11px 14px; font-size: .9rem; color: var(--text-h);
+      border-right: 1.5px solid var(--border); white-space: nowrap; flex-shrink: 0;
+    }
+    .phone-row input { border: none; border-radius: 0; background: transparent; flex: 1; }
+
+    .error-box {
+      background: #fee2e2; border: 1px solid #fecaca; color: #b91c1c;
+      border-radius: 8px; padding: 11px 14px; font-size: .83rem;
+      margin-bottom: 14px; display: none;
+    }
+    .form-note { font-size: .72rem; text-align: center; color: var(--text-b); opacity: .5; margin-top: 10px; }
+
+    /* ── Disclaimer ── */
+    .disclaimer {
+      font-size: .69rem; color: var(--text-b); opacity: .4;
+      text-align: center; margin-top: 24px; line-height: 1.5; padding: 0 8px;
+    }
+
+    /* ── Sources bottom sheet ── */
+    .sources-overlay {
+      position: fixed; inset: 0;
+      background: rgba(30,45,36,.5);
+      display: none; align-items: flex-end; justify-content: center;
+      z-index: 9000;
+    }
+    .sources-overlay.open { display: flex; }
+    .sources-sheet {
+      background: var(--white); border-radius: 20px 20px 0 0;
+      padding: 28px 24px 40px; width: 100%; max-width: 520px;
+      max-height: 70vh; overflow-y: auto;
+    }
+    .sources-sheet h3 { font-family: var(--serif); font-size: 1.05rem; color: var(--text-h); margin-bottom: 16px; }
+    .sources-sheet ul { list-style: none; display: flex; flex-direction: column; gap: 12px; }
+    .sources-sheet li {
+      font-size: .82rem; color: var(--text-b); line-height: 1.55;
+      padding-left: 12px; border-left: 2px solid var(--green-muted);
+    }
+    .sources-sheet li strong { color: var(--green); }
+    .sources-close {
+      width: 100%; padding: 12px; background: var(--bg);
+      border: 1px solid var(--border); border-radius: 10px;
+      font-family: var(--sans); font-size: .9rem; cursor: pointer;
+      margin-top: 20px; transition: background .2s;
+    }
+    .sources-close:hover { background: var(--border); }
+
+    @media (max-width: 520px) {
+      .quiz-wrap { padding: 14px 16px 60px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── Logo ── -->
+<div class="top-bar">
+  <img src="assets/placeholder-logo.svg" alt="Ayush, Diabetes Freedom Coach" />
+</div>
+
+<!-- ── Progress bar ── -->
+<div class="progress-wrap">
+  <div class="progress-track">
+    <div class="progress-fill" id="progressFill"></div>
+  </div>
+  <span class="progress-pct" id="progressPct"></span>
+</div>
+
+<!-- ── Quiz ── -->
+<div class="quiz-wrap">
+  <button class="back-btn" id="backBtn" hidden onclick="goBack()">← Back</button>
+
+  <!-- ════ S1: Assessment intro ════ -->
+  <div class="screen active" id="s1">
+    <div class="interstitial">
+      <div class="assess-icon">✅</div>
+      <h2 class="interstitial-title">Your Call Is Booked: One Last Step</h2>
+      <p class="interstitial-sub">Answer a few honest questions so Ayush can understand your exact situation and make your discovery call as useful as possible.</p>
+      <div class="assess-points">
+        <div class="assess-point"><span class="assess-check">✓</span>Takes about 3 minutes</div>
+        <div class="assess-point"><span class="assess-check">✓</span>Your answers are completely private</div>
+        <div class="assess-point"><span class="assess-check">✓</span>Ayush reviews this before your discovery call</div>
+      </div>
+      <button class="btn-continue" onclick="advance()" style="margin-top:28px;">Start My Assessment →</button>
+    </div>
+  </div>
+
+  <!-- ════ S2: Gender ════ -->
+  <div class="screen" id="s2">
+    <p class="q-label">About you</p>
+    <h2 class="q-heading">How do you identify?</h2>
+    <div class="card-grid-2">
+      <div class="portrait-card" onclick="selectCard(this,'gender','male')">
+        <div class="card-img" style="background:#EEF0F8;">👨</div>
+        <div class="card-label">Male</div>
+      </div>
+      <div class="portrait-card" onclick="selectCard(this,'gender','female')">
+        <div class="card-img" style="background:#F8EEF4;">👩</div>
+        <div class="card-label">Female</div>
+      </div>
+    </div>
+    <button class="btn-continue" style="margin-top:10px;" onclick="selectCard(null,'gender','prefer-not-to-say',true)"
+      style="background:transparent;color:var(--text-b);font-size:.82rem;border:1.5px solid var(--border);border-radius:50px;width:100%;padding:10px;cursor:pointer;font-family:var(--sans);transition:all .2s;">
+      Prefer not to say
+    </button>
+  </div>
+
+  <!-- ════ S3: Age ════ -->
+  <div class="screen" id="s3">
+    <p class="q-label">About you</p>
+    <h2 class="q-heading">Select your age</h2>
+    <div class="card-grid-2x2">
+      <div class="portrait-card age-card" onclick="selectCard(this,'age','25-34')">
+        <div class="card-img" style="background:#EEF0F8;">🧑</div>
+        <div class="card-label">Age 25 to 34</div>
+      </div>
+      <div class="portrait-card age-card" onclick="selectCard(this,'age','35-44')">
+        <div class="card-img" style="background:#F0EEEE;">🧔</div>
+        <div class="card-label">Age 35 to 44</div>
+      </div>
+      <div class="portrait-card age-card" onclick="selectCard(this,'age','45-54')">
+        <div class="card-img" style="background:#F0EEF8;">👨‍🦳</div>
+        <div class="card-label">Age 45 to 54</div>
+      </div>
+      <div class="portrait-card age-card" onclick="selectCard(this,'age','55+')">
+        <div class="card-img" style="background:#EEF4F8;">👴</div>
+        <div class="card-label">Age 55+</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════ S4: Personalisation interstitial ════ -->
+  <div class="screen" id="s4">
+    <div class="interstitial">
+      <div class="person-card">
+        <div class="greeting">👋</div>
+        <p id="s4msg">We're building your personalised plan. Let's understand where you are today.</p>
+      </div>
+      <button class="btn-continue" onclick="advance()">Let's go →</button>
+    </div>
+  </div>
+
+  <!-- ════ S5: Blood sugar status ════ -->
+  <div class="screen" id="s5">
+    <p class="q-label">Health status</p>
+    <h2 class="q-heading">Where are you with your blood sugar right now?</h2>
+    <button class="opt-btn" onclick="selectOpt(this,'bloodSugar','type2')">
+      Diagnosed with Type 2 diabetes <span class="opt-check"></span>
+    </button>
+    <button class="opt-btn" onclick="selectOpt(this,'bloodSugar','prediabetes')">
+      Prediabetes <span class="opt-check"></span>
+    </button>
+    <button class="opt-btn" onclick="selectOpt(this,'bloodSugar','high-undiagnosed')">
+      High readings, not formally diagnosed yet <span class="opt-check"></span>
+    </button>
+    <button class="opt-btn" onclick="selectOpt(this,'bloodSugar','normal-worried')">
+      Numbers are normal, but I'm worried <span class="opt-check"></span>
+    </button>
+    <button class="opt-btn" onclick="selectOpt(this,'bloodSugar','dont-know')">
+      I don't know my numbers <span class="opt-check"></span>
+    </button>
+  </div>
+
+  <!-- ════ S6: HbA1c ════ -->
+  <div class="screen" id="s6">
+    <p class="q-label">Health status</p>
+    <h2 class="q-heading">Do you know your latest HbA1c reading?</h2>
+    <p class="q-sub">HbA1c is the gold standard blood test for long term blood sugar. Your doctor will have this. Select "Don't know" if you're unsure.</p>
+    <button class="opt-btn" onclick="selectOpt(this,'hba1c','below-5.7')">Below 5.7%: normal <span class="opt-check"></span></button>
+    <button class="opt-btn" onclick="selectOpt(this,'hba1c','5.7-6.4')">5.7 to 6.4%: prediabetes range <span class="opt-check"></span></button>
+    <button class="opt-btn" onclick="selectOpt(this,'hba1c','6.5-7.5')">6.5 to 7.5%: diabetic range <span class="opt-check"></span></button>
+    <button class="opt-btn" onclick="selectOpt(this,'hba1c','7.6-9.0')">7.6 to 9.0%: elevated <span class="opt-check"></span></button>
+    <button class="opt-btn" onclick="selectOpt(this,'hba1c','above-9')">Above 9.0%: significantly elevated <span class="opt-check"></span></button>
+    <button class="opt-btn" onclick="selectOpt(this,'hba1c','dont-know')">Don't know / not tested recently <span class="opt-check"></span></button>
+  </div>
+
+  <!-- ════ S7: Duration ════ -->
+  <div class="screen" id="s7">
+    <p class="q-label">Health status</p>
+    <h2 class="q-heading">How long have you been dealing with this?</h2>
+    <button class="opt-btn" onclick="selectOpt(this,'duration','just-found-out')">Just found out <span class="opt-check"></span></button>
+    <button class="opt-btn" onclick="selectOpt(this,'duration','under-1yr')">Less than 1 year <span class="opt-check"></span></button>
+    <button class="opt-btn" onclick="selectOpt(this,'duration','1-3yr')">1 to 3 years <span class="opt-check"></span></button>
+    <button class="opt-btn" onclick="selectOpt(this,'duration','3-5yr')">3 to 5 years <span class="opt-check"></span></button>
+    <button class="opt-btn" onclick="selectOpt(this,'duration','5plus-yr')">5+ years <span class="opt-check"></span></button>
+  </div>
+
+  <!-- ════ S8: Medication ════ -->
+  <div class="screen" id="s8">
+    <p class="q-label">Health status</p>
+    <h2 class="q-heading">Are you currently on any medication for blood sugar?</h2>
+    <button class="opt-btn" onclick="selectOpt(this,'medication','none')">No medication <span class="opt-check"></span></button>
+    <button class="opt-btn" onclick="selectOpt(this,'medication','metformin')">Metformin only <span class="opt-check"></span></button>
+    <button class="opt-btn" onclick="selectOpt(this,'medication','metformin-plus')">Metformin + other tablets <span class="opt-check"></span></button>
+    <button class="opt-btn" onclick="selectOpt(this,'medication','insulin')">Insulin injections <span class="opt-check"></span></button>
+    <button class="opt-btn" onclick="selectOpt(this,'medication','not-sure')">Not sure <span class="opt-check"></span></button>
+  </div>
+
+  <!-- ════ S9: Challenges (multi-select) ════ -->
+  <div class="screen" id="s9">
+    <p class="q-label">Your experience</p>
+    <h2 class="q-heading">What are your biggest challenges right now?</h2>
+    <p class="q-sub">Select all that apply.</p>
+    <button class="opt-btn multi" onclick="toggleMulti(this,'challenges','spikes')">Blood sugar spikes after meals <span class="opt-check"></span></button>
+    <button class="opt-btn multi" onclick="toggleMulti(this,'challenges','fatigue')">Constant fatigue / low energy <span class="opt-check"></span></button>
+    <button class="opt-btn multi" onclick="toggleMulti(this,'challenges','brain-fog')">Afternoon brain fog affecting work <span class="opt-check"></span></button>
+    <button class="opt-btn multi" onclick="toggleMulti(this,'challenges','belly-fat')">Belly fat / weight gain <span class="opt-check"></span></button>
+    <button class="opt-btn multi" onclick="toggleMulti(this,'challenges','cravings')">Sugar cravings / emotional eating <span class="opt-check"></span></button>
+    <button class="opt-btn multi" onclick="toggleMulti(this,'challenges','poor-sleep')">Poor sleep / stress <span class="opt-check"></span></button>
+    <button class="opt-btn multi" onclick="toggleMulti(this,'challenges','complications')">Fear of long term complications <span class="opt-check"></span></button>
+    <button class="opt-btn multi" onclick="toggleMulti(this,'challenges','confusion')">Confusion about what to eat <span class="opt-check"></span></button>
+    <button class="btn-continue" id="s9Continue" disabled onclick="advance()">Continue →</button>
+  </div>
+
+  <!-- ════ S10: Impact on work ════ -->
+  <div class="screen" id="s10">
+    <p class="q-label">Impact</p>
+    <h2 class="q-heading">How much is this affecting your work and daily energy?</h2>
+    <button class="opt-btn" onclick="selectOpt(this,'impact','severe')">Severe: it's hurting my performance <span class="opt-check"></span></button>
+    <button class="opt-btn" onclick="selectOpt(this,'impact','noticeable')">Noticeable: I feel it every day <span class="opt-check"></span></button>
+    <button class="opt-btn" onclick="selectOpt(this,'impact','mild')">Mild: manageable but frustrating <span class="opt-check"></span></button>
+    <button class="opt-btn" onclick="selectOpt(this,'impact','not-yet')">Not yet, but I'm worried it will <span class="opt-check"></span></button>
+  </div>
+
+  <!-- ════ S11: 12-month outlook ════ -->
+  <div class="screen" id="s11">
+    <p class="q-label">Impact</p>
+    <h2 class="q-heading">If nothing changes, where do you see your health in 12 months?</h2>
+    <button class="opt-btn" onclick="selectOpt(this,'outlook','worried-worse')">Seriously worried: it'll get worse <span class="opt-check"></span></button>
+    <button class="opt-btn" onclick="selectOpt(this,'outlook','stuck-same')">Probably the same: stuck in a cycle <span class="opt-check"></span></button>
+    <button class="opt-btn" onclick="selectOpt(this,'outlook','not-sure')">Not sure what to expect <span class="opt-check"></span></button>
+    <button class="opt-btn" onclick="selectOpt(this,'outlook','refuse-to-let')">I refuse to let it get there <span class="opt-check"></span></button>
+  </div>
+
+  <!-- ════ S12: What they've tried (multi-select) ════ -->
+  <div class="screen" id="s12">
+    <p class="q-label">Your journey</p>
+    <h2 class="q-heading">What have you already tried?</h2>
+    <p class="q-sub">Select all that apply.</p>
+    <button class="opt-btn multi" onclick="toggleMulti(this,'tried','multiple-programs')">Tried multiple programs: none lasted <span class="opt-check"></span></button>
+    <button class="opt-btn multi" onclick="toggleMulti(this,'tried','medication-only')">Medication only, no lifestyle change <span class="opt-check"></span></button>
+    <button class="opt-btn multi" onclick="toggleMulti(this,'tried','generic-diet')">Generic diet plans (keto, GM diet, etc.) <span class="opt-check"></span></button>
+    <button class="opt-btn multi" onclick="toggleMulti(this,'tried','gym')">Gym / exercise <span class="opt-check"></span></button>
+    <button class="opt-btn multi" onclick="toggleMulti(this,'tried','nothing')">Nothing structured yet <span class="opt-check"></span></button>
+    <button class="btn-continue" id="s12Continue" disabled onclick="advance()">Continue →</button>
+  </div>
+
+  <!-- ════ S13: Root cause + optional note ════ -->
+  <div class="screen" id="s13">
+    <p class="q-label">Root cause</p>
+    <h2 class="q-heading">What's the #1 thing stopping you from fixing this?</h2>
+    <button class="opt-btn" onclick="selectOpt(this,'obstacle','dont-know-what-to-eat')">I don't know what to eat <span class="opt-check"></span></button>
+    <button class="opt-btn" onclick="selectOpt(this,'obstacle','no-time')">No time: I'm too busy <span class="opt-check"></span></button>
+    <button class="opt-btn" onclick="selectOpt(this,'obstacle','cant-stay-consistent')">I can't stay consistent on my own <span class="opt-check"></span></button>
+    <button class="opt-btn" onclick="selectOpt(this,'obstacle','conflicting-info')">Too much conflicting information <span class="opt-check"></span></button>
+    <button class="opt-btn" onclick="selectOpt(this,'obstacle','stress-emotional')">Stress and emotional eating <span class="opt-check"></span></button>
+    <button class="opt-btn" onclick="selectOpt(this,'obstacle','no-accountability')">No one to keep me accountable <span class="opt-check"></span></button>
+    <textarea class="opt-textarea" id="obstacleNote" placeholder="Anything else you'd like Ayush to know? (optional)" rows="2"
+      oninput="answers.obstacleNote = this.value"></textarea>
+  </div>
+
+  <!-- ════ S14: Eating pattern ════ -->
+  <div class="screen" id="s14">
+    <p class="q-label">Lifestyle</p>
+    <h2 class="q-heading">Which best describes your daily eating pattern?</h2>
+    <button class="opt-btn" onclick="selectOpt(this,'eating','home-cooked')">Mostly home cooked meals <span class="opt-check"></span></button>
+    <button class="opt-btn" onclick="selectOpt(this,'eating','office-canteen')">Office canteen / cafeteria <span class="opt-check"></span></button>
+    <button class="opt-btn" onclick="selectOpt(this,'eating','zomato-swiggy')">Frequent Zomato / Swiggy orders <span class="opt-check"></span></button>
+    <button class="opt-btn" onclick="selectOpt(this,'eating','irregular')">Irregular meals / often skip meals <span class="opt-check"></span></button>
+  </div>
+
+  <!-- ════ S15: Work schedule ════ -->
+  <div class="screen" id="s15">
+    <p class="q-label">Lifestyle</p>
+    <h2 class="q-heading">What's your work life like?</h2>
+    <button class="opt-btn" onclick="selectOpt(this,'work','desk-9to6')">Desk job, regular 9 to 6 hours <span class="opt-check"></span></button>
+    <button class="opt-btn" onclick="selectOpt(this,'work','shift-work')">Shift work / rotating schedule <span class="opt-check"></span></button>
+    <button class="opt-btn" onclick="selectOpt(this,'work','frequent-travel')">Frequent travel / client facing <span class="opt-check"></span></button>
+    <button class="opt-btn" onclick="selectOpt(this,'work','long-irregular')">Long or very irregular hours <span class="opt-check"></span></button>
+    <button class="opt-btn" onclick="selectOpt(this,'work','self-employed')">Self employed / flexible schedule <span class="opt-check"></span></button>
+  </div>
+
+  <!-- ════ S16: Commitment ════ -->
+  <div class="screen" id="s16">
+    <p class="q-label">Readiness</p>
+    <h2 class="q-heading">Are you willing to follow a structured nutrition and lifestyle plan for 90 days?</h2>
+    <button class="opt-btn" onclick="selectOpt(this,'commitment','fully-committed')">Yes: I'm fully committed <span class="opt-check"></span></button>
+    <button class="opt-btn" onclick="selectOpt(this,'commitment','willing-need-support')">I'm willing, but I'll need support and guidance <span class="opt-check"></span></button>
+    <button class="opt-btn" onclick="selectOpt(this,'commitment','not-sure')">Not sure yet <span class="opt-check"></span></button>
+  </div>
+
+  <!-- ════ S17: Urgency ════ -->
+  <div class="screen" id="s17">
+    <p class="q-label">Readiness</p>
+    <h2 class="q-heading">How soon are you ready to take control of your health?</h2>
+    <button class="opt-btn" onclick="selectOpt(this,'urgency','right-now')">Right now: I want to start immediately <span class="opt-check"></span></button>
+    <button class="opt-btn" onclick="selectOpt(this,'urgency','within-15-days')">Within the next 15 days <span class="opt-check"></span></button>
+    <button class="opt-btn" onclick="selectOpt(this,'urgency','within-30-days')">Within the next 30 days <span class="opt-check"></span></button>
+    <button class="opt-btn" onclick="selectOpt(this,'urgency','just-exploring')">Just exploring options for now <span class="opt-check"></span></button>
+  </div>
+
+  <!-- ════ S18: Investment ════ -->
+  <div class="screen" id="s18">
+    <p class="q-label">Readiness</p>
+    <h2 class="q-heading">Real transformation takes investment. What works for you?</h2>
+    <p class="q-sub">This is about your readiness to invest in a proper, personalised solution, not a generic app or a one size fits all diet.</p>
+    <button class="opt-btn" onclick="selectOpt(this,'investment','ready-now')">I'm ready to invest in my health now <span class="opt-check"></span></button>
+    <button class="opt-btn" onclick="selectOpt(this,'investment','if-i-see-value')">I can invest if I see a clear, personalised plan <span class="opt-check"></span></button>
+    <button class="opt-btn" onclick="selectOpt(this,'investment','need-payment-plan')">I'd need a flexible payment arrangement <span class="opt-check"></span></button>
+    <button class="opt-btn" onclick="selectOpt(this,'investment','not-able')">I'm not in a position to invest right now <span class="opt-check"></span></button>
+  </div>
+
+  <!-- ════ S19: Why now (open text) ════ -->
+  <div class="screen" id="s19">
+    <p class="q-label">Your motivation</p>
+    <h2 class="q-heading">In one line, why is fixing this important to you <em>now</em>?</h2>
+    <p class="q-sub">Ayush reads this before your call. Be honest.</p>
+    <textarea class="why-input" id="whyNow" placeholder="e.g. My doctor said if my HbA1c doesn't improve in 3 months, I'll need insulin…"
+      oninput="answers.whyNow = this.value"></textarea>
+    <button class="btn-continue" onclick="advance()">Continue →</button>
+  </div>
+
+  <!-- ════ S20: Building plan interstitial ════ -->
+  <div class="screen" id="s20">
+    <!-- Phase 1: animated build -->
+    <div class="building-wrap" id="buildingPhase">
+      <div class="building-spinner"></div>
+      <p style="font-family:var(--serif);font-size:1.1rem;color:var(--text-h);margin-bottom:18px;">Analysing your answers…</p>
+      <div class="building-steps">
+        <div class="build-step" id="bStep1">📊 Evaluating your health profile</div>
+        <div class="build-step" id="bStep2">🥗 Matching to a nutrition strategy</div>
+        <div class="build-step" id="bStep3">✅ Building your personalised plan</div>
+      </div>
+    </div>
+    <!-- Phase 2: result reveal -->
+    <div class="result-reveal" id="resultReveal">
+      <div class="interstitial">
+        <div id="tierBadgeWrap"></div>
+        <div class="safety-notice" id="safetyNotice">
+          ⚠️ <strong>Important:</strong> Based on your answers, we recommend involving your doctor in your health journey. Ayush works alongside medical professionals, and your call will include guidance on how to do this safely.
+        </div>
+        <div class="result-card" id="resultCard">
+          <p class="result-headline" id="resultHeadline"></p>
+          <p id="resultBody"></p>
+        </div>
+        <button class="btn-continue" onclick="finishAndConfirm(this)">Finish →</button>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ════ Thank-you — shown after the questions are submitted ════ -->
+  <div class="screen" id="sDone">
+    <div class="interstitial">
+      <div class="assess-icon">🎉</div>
+      <h2 class="interstitial-title">Thank you, you're all set!</h2>
+      <p class="interstitial-sub">Your answers are saved. Ayush will review them before your discovery call so it's tailored to you. Look out for a message from him on WhatsApp.</p>
+      <a id="doneWa" href="#" class="btn-continue" style="display:block;text-decoration:none;text-align:center;margin-top:24px;">Message Ayush on WhatsApp</a>
+    </div>
+  </div>
+
+</div><!-- /quiz-wrap -->
+
+
+<!-- ════════════════════════════════════════════════════════
+  SCRIPTS
+════════════════════════════════════════════════════════ -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="secrets.js"></script>
+<script src="config.js"></script>
+<script>
+
+// ── Total screens (S1–S20) ──
+const TOTAL = 20
+
+// ── Answers accumulated across all screens ──
+const answers = {
+  gender: null, age: null,
+  bloodSugar: null, hba1c: null, duration: null, medication: null,
+  challenges: [], impact: null, outlook: null, tried: [],
+  obstacle: null, obstacleNote: '',
+  eating: null, work: null,
+  commitment: null, urgency: null, investment: null, whyNow: '',
+  // computed at S20:
+  leadScore: 0, leadTier: null, safetyFlag: false
+}
+
+// ── Screen history (for Back button) ──
+let history = [1]       // stack of visited screen numbers
+let current = 1         // currently visible screen number
+
+// ── Connect Supabase ──
+let db = null
+try { db = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY) }
+catch (e) { console.error('Supabase init failed:', e) }
+
+
+// ════════════════════════════════════════
+// NAVIGATION
+// ════════════════════════════════════════
+
+function showScreen(n) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'))
+  document.getElementById('s' + n).classList.add('active')
+  current = n
+  updateProgress(n)
+  document.getElementById('backBtn').hidden = (n <= 1)
+  window.scrollTo({ top: 0, behavior: 'smooth' })
+}
+
+function advance() {
+  const next = current + 1
+  history.push(next)
+  // S20 triggers the build animation before showing content
+  if (next === 20) { showScreen(20); runBuildAnimation(); return }
+  showScreen(next)
+}
+
+function goBack() {
+  if (history.length <= 1) return
+  history.pop()
+  showScreen(history[history.length - 1])
+}
+
+function updateProgress(n) {
+  const pct = Math.round(((n - 1) / (TOTAL - 1)) * 100)
+  document.getElementById('progressFill').style.width = pct + '%'
+  document.getElementById('progressPct').textContent = pct > 0 ? pct + '%' : ''
+}
+
+
+// ════════════════════════════════════════
+// OPTION SELECTION
+// ════════════════════════════════════════
+
+// Single-select: save answer and auto-advance after a short flash
+function selectOpt(btn, key, val) {
+  // Deselect siblings in this screen
+  btn.closest('.screen').querySelectorAll('.opt-btn:not(.multi)')
+    .forEach(b => b.classList.remove('selected'))
+  btn.classList.add('selected')
+  answers[key] = val
+
+  // Show optional textarea on S13 after selection
+  if (key === 'obstacle') {
+    const ta = document.getElementById('obstacleNote')
+    ta.classList.add('visible')
+  }
+
+  // Auto-advance after a short delay (so the selection state is visible)
+  setTimeout(advance, 220)
+}
+
+// Portrait card selection (S2, S3) — same but uses card element
+function selectCard(card, key, val, skipCard = false) {
+  if (!skipCard && card) {
+    card.closest('.screen').querySelectorAll('.portrait-card')
+      .forEach(c => c.classList.remove('selected'))
+    card.classList.add('selected')
+  }
+  answers[key] = val
+
+  // Personalise S4 message before advancing
+  if (key === 'age') {
+    const gLabel = answers.gender === 'female' ? 'professional' :
+                   answers.gender === 'male'   ? 'professional' : 'professional'
+    document.getElementById('s4msg').textContent =
+      `Great, we're tailoring your plan for a ${(answers.age || '').replace('-', ' to ')} ${gLabel}. Let's understand where you are today.`
+  }
+
+  setTimeout(advance, 220)
+}
+
+// Multi-select toggle (S9, S12)
+function toggleMulti(btn, key, val) {
+  btn.classList.toggle('selected')
+  const arr = answers[key]
+  const idx = arr.indexOf(val)
+  if (idx === -1) arr.push(val)
+  else arr.splice(idx, 1)
+
+  // Enable the Continue button once at least one is selected
+  const contId = key === 'challenges' ? 's9Continue' : 's12Continue'
+  document.getElementById(contId).disabled = (arr.length === 0)
+}
+
+
+// ════════════════════════════════════════
+// SCORING
+// ════════════════════════════════════════
+
+function computeScore() {
+  const a = answers
+  let score = 0
+  let safetyFlag = false
+
+  // S5 — blood sugar status
+  score += ({ 'type2': 8, 'prediabetes': 7, 'high-undiagnosed': 6, 'normal-worried': 3, 'dont-know': 4 }[a.bloodSugar] || 0)
+
+  // S6 — HbA1c
+  score += ({ 'below-5.7': 1, '5.7-6.4': 6, '6.5-7.5': 8, '7.6-9.0': 7, 'above-9': 5, 'dont-know': 4 }[a.hba1c] || 0)
+  if (a.hba1c === 'above-9') safetyFlag = true
+
+  // S7 — duration
+  score += ({ 'just-found-out': 6, 'under-1yr': 5, '1-3yr': 5, '3-5yr': 4, '5plus-yr': 3 }[a.duration] || 0)
+
+  // S8 — medication
+  score += ({ 'none': 5, 'metformin': 5, 'metformin-plus': 5, 'insulin': 3, 'not-sure': 3 }[a.medication] || 0)
+  if (a.medication === 'insulin') safetyFlag = true
+
+  // S9 — challenges (multi-select, +1 each, capped at 6)
+  score += Math.min((a.challenges || []).length, 6)
+
+  // S10 — impact
+  score += ({ 'severe': 8, 'noticeable': 6, 'mild': 3, 'not-yet': 4 }[a.impact] || 0)
+
+  // S11 — outlook
+  score += ({ 'worried-worse': 6, 'stuck-same': 5, 'not-sure': 3, 'refuse-to-let': 6 }[a.outlook] || 0)
+
+  // S12 — tried (multi-select, take the highest single value)
+  const triedMap = { 'multiple-programs': 6, 'medication-only': 4, 'generic-diet': 4, 'gym': 4, 'nothing': 2 }
+  const triedScores = (a.tried || []).map(t => triedMap[t] || 0)
+  score += triedScores.length ? Math.max(...triedScores) : 0
+
+  // S13 — obstacle
+  score += ({ 'dont-know-what-to-eat': 3, 'no-time': 3, 'cant-stay-consistent': 4,
+              'conflicting-info': 4, 'stress-emotional': 3, 'no-accountability': 5 }[a.obstacle] || 0)
+
+  // S14 — eating
+  score += ({ 'home-cooked': 2, 'office-canteen': 3, 'zomato-swiggy': 4, 'irregular': 4 }[a.eating] || 0)
+
+  // S15 — work
+  score += ({ 'desk-9to6': 2, 'shift-work': 3, 'frequent-travel': 3, 'long-irregular': 3, 'self-employed': 2 }[a.work] || 0)
+
+  // S16 — commitment (weight ~20)
+  score += ({ 'fully-committed': 20, 'willing-need-support': 12, 'not-sure': 3 }[a.commitment] || 0)
+
+  // S17 — urgency (weight ~20)
+  score += ({ 'right-now': 20, 'within-15-days': 15, 'within-30-days': 9, 'just-exploring': 2 }[a.urgency] || 0)
+
+  // S18 — investment (weight ~25)
+  score += ({ 'ready-now': 25, 'if-i-see-value': 18, 'need-payment-plan': 10, 'not-able': 0 }[a.investment] || 0)
+
+  // ── Tier assignment ──
+  // Auto-C overrides: won't invest, or (just exploring AND not sure)
+  let tier
+  if (a.investment === 'not-able' ||
+      (a.urgency === 'just-exploring' && a.commitment === 'not-sure')) {
+    tier = 'C'
+  } else if (score >= 85) {
+    tier = 'A'
+  } else if (score >= 55) {
+    tier = 'B'
+  } else {
+    tier = 'C'
+  }
+
+  return { score, tier, safetyFlag }
+}
+
+
+// ════════════════════════════════════════
+// S20 BUILD ANIMATION
+// ════════════════════════════════════════
+
+function runBuildAnimation() {
+  const steps = ['bStep1', 'bStep2', 'bStep3']
+  steps.forEach((id, i) => {
+    setTimeout(() => {
+      const el = document.getElementById(id)
+      el.classList.add('visible')
+      if (i > 0) document.getElementById(steps[i - 1]).classList.add('done')
+    }, 500 + i * 600)
+  })
+
+  // After all steps, compute score and reveal result
+  setTimeout(() => {
+    document.getElementById('bStep3').classList.add('done')
+    const { score, tier, safetyFlag } = computeScore()
+    answers.leadScore  = score
+    answers.leadTier   = tier
+    answers.safetyFlag = safetyFlag
+
+    // Swap phases
+    document.getElementById('buildingPhase').style.display = 'none'
+    const reveal = document.getElementById('resultReveal')
+    reveal.classList.add('show')
+
+    // Tier badge
+    const badgeEl = document.getElementById('tierBadgeWrap')
+    const tierLabels = { A: 'Strong fit', B: 'Good fit', C: 'Early stages' }
+    const tierClass  = { A: 'tier-a', B: 'tier-b', C: 'tier-c' }
+    badgeEl.innerHTML = `<span class="tier-badge ${tierClass[tier]}">${tierLabels[tier]}</span>`
+
+    // Safety notice
+    if (safetyFlag) document.getElementById('safetyNotice').classList.add('show')
+
+    // Result headline + body
+    const hl = document.getElementById('resultHeadline')
+    const bd = document.getElementById('resultBody')
+    if (tier === 'A') {
+      hl.textContent = 'You\'re a strong fit for the 90 day programme'
+      bd.textContent = 'Based on your profile and commitment, Ayush believes he can help you significantly improve your blood sugar and energy levels. He\'ll review your answers before your discovery call so it\'s tailored to you.'
+    } else if (tier === 'B') {
+      hl.textContent = 'You\'re a good fit, let\'s find the right path'
+      bd.textContent = 'Your answers show real motivation and a genuine need. Ayush will use them to personalise your discovery call and recommend the right path for your situation, including flexible options.'
+    } else {
+      hl.textContent = 'We\'d love to help when you\'re ready'
+      bd.textContent = 'Thanks for sharing this. Ayush will review your answers before your call and point you to the best next step for where you are right now.'
+    }
+  }, 500 + 2 * 600 + 700)
+}
+
+
+// ════════════════════════════════════════
+// SAVE LEAD + GO TO CONFIRMATION
+// ════════════════════════════════════════
+// This is the LAST step of the funnel. By now the visitor has already
+// registered (register.html) and booked a slot (book.html). We combine
+// their contact details with the quiz answers and save the lead as a
+// single row, then send them to the confirmation page.
+
+async function finishAndConfirm(btn) {
+  if (btn) { btn.disabled = true; btn.textContent = 'Saving…' }
+
+  // Contact details captured at registration (register.html)
+  let leadData = null
+  try { leadData = JSON.parse(sessionStorage.getItem('leadData') || 'null') } catch (e) {}
+
+  const payload = {
+    first_name:  leadData?.firstName  || null,
+    email:       leadData?.email      || null,
+    phone:       leadData?.phone      || null,
+    profession:  leadData?.profession || null,
+    lead_score:  answers.leadScore,
+    lead_tier:   answers.leadTier,
+    safety_flag: answers.safetyFlag,
+    quiz_answers: {
+      gender:       answers.gender,
+      age:          answers.age,
+      bloodSugar:   answers.bloodSugar,
+      hba1c:        answers.hba1c,
+      duration:     answers.duration,
+      medication:   answers.medication,
+      challenges:   answers.challenges,
+      impact:       answers.impact,
+      outlook:      answers.outlook,
+      tried:        answers.tried,
+      obstacle:     answers.obstacle,
+      obstacleNote: answers.obstacleNote,
+      eating:       answers.eating,
+      work:         answers.work,
+      commitment:   answers.commitment,
+      urgency:      answers.urgency,
+      investment:   answers.investment,
+      whyNow:       answers.whyNow,
+    }
+  }
+
+  // Save the lead. The booking is already confirmed, so even if this
+  // write fails we still take the visitor to the confirmation page
+  // rather than trapping them on the quiz. (23505 = duplicate email,
+  // which is fine — they simply went through the funnel twice.)
+  try {
+    if (db) {
+      const { error } = await db.from('leads').insert(payload)
+      if (error && error.code !== '23505') console.error('Lead save failed:', error)
+    }
+  } catch (e) {
+    console.error('Lead save threw:', e)
+  }
+
+  // Everything's done. The booking was already confirmed earlier, so we
+  // clear the carried-over session data and show a short thank-you screen.
+  sessionStorage.removeItem('leadData')
+  sessionStorage.removeItem('bookingData')
+  showThankYou()
+}
+
+function showThankYou() {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'))
+  document.getElementById('backBtn').hidden = true
+  const pw = document.querySelector('.progress-wrap')
+  if (pw) pw.style.display = 'none'
+
+  // Wire the WhatsApp button to the coach's number from config.js
+  const wa = document.getElementById('doneWa')
+  if (wa && typeof COACH_WHATSAPP !== 'undefined') wa.href = `https://wa.me/${COACH_WHATSAPP}`
+
+  document.getElementById('sDone').classList.add('active')
+  window.scrollTo({ top: 0, behavior: 'smooth' })
+}
+
+</script>
+</body>
+</html>
