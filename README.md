@@ -22,10 +22,6 @@ Any profession where a first conversation is valuable, limited, and not every in
 - **Veterinarians** can use it to triage urgency before booking an appointment slot.
 - **Immigration and tax consultants** can use it to sort inquiries by case complexity before a paid consultation.
 
-## Demo
-
-> 🎥 **Recording to be added.** A walkthrough of the live flow: slot booking, the event landing on Google Calendar, the confirmation email arriving, the qualification quiz, the automatic score. Captured directly rather than left for a visitor to trigger, since the booking step writes to a real calendar and sends from a real inbox. This way the full loop is provable without anyone but the site owner ever running it live.
-
 ## What I built
 
 Full-stack: the frontend in this repo (landing page, content pages, quiz UI) plus the backend architecture described below.
@@ -43,7 +39,7 @@ Full-stack: the frontend in this repo (landing page, content pages, quiz UI) plu
 
 Every file below is real code from the actual build, copied over as-is except for identity redaction (real name/contact info swapped for placeholders) and photo/logo assets removed. Nothing here is a mock-up or a rewrite.
 
-**Short on time? Open these four:** the demo recording above; [`supabase/functions/create-calendar-event/index.ts`](./supabase/functions/create-calendar-event/index.ts), the Google Calendar API integration and the single feature that took the most time to build; [`funnel.html`](./funnel.html) for the qualification quiz and scoring logic; and [`supabase/admin-auth-migration.sql`](./supabase/admin-auth-migration.sql) for the actual security fix described in [What I changed my mind about](#what-i-changed-my-mind-about).
+**Short on time? Open these three:** [`supabase/functions/create-calendar-event/index.ts`](./supabase/functions/create-calendar-event/index.ts), the Google Calendar API integration and the single feature that took the most time to build; [`funnel.html`](./funnel.html) for the qualification quiz and scoring logic; and [`supabase/admin-auth-migration.sql`](./supabase/admin-auth-migration.sql) for the actual security fix described in [What I changed my mind about](#what-i-changed-my-mind-about).
 
 | File | What it shows |
 |---|---|
